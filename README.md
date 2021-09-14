@@ -4,3 +4,5 @@ Iremos desenvolver um sistema para leilões online ao longo da disciplina.
 
 O arquivo "casos_de_uso.pdf" é referente a atividade da aula2.
 
+O diagrama de casos de uso está fornecido nos formatos jpg e png.
+
