@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for post in object_list %}
+    <div class="leiloeiro-entry">
+        <h2><a href="{% url 'leiloeiro_detail' leiloeiro.pk %}">{{ leiloeiro.nome }}</a></h2>
+        <p>{{ leiloeiro.cpf }}</p> <br/>
+        <p>{{ leiloeiro.bio }}</p>
+    </div>
+{% endfor %}
+
+{% endblock content %}

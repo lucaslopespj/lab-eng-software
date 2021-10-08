@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="comprador-entry">
+        <h2>{{comprador.nome}}</h2>
+        <p>{{ comprador.cpf }}</p>
+        <p>{{ comprador.bio }}</p>
+    </div>
+
+    <a href="{%  url 'comprador_edit' comprador.pk %}">+ Editar Comprador</a>
+    <a href="{%  url 'comprador_delete' comprador.pk %}">+ Deletar Comprador</a>
+
+{% endblock content %}

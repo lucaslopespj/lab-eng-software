@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for post in object_list %}
+    <div class="comprador-entry">
+        <h2><a href="{% url 'comprador_detail' comprador.pk %}">{{ comprador.nome }}</a></h2>
+        <p>{{ comprador.cpf }}</p> <br/>
+        <p>{{ comprador.bio }}</p>
+    </div>
+{% endfor %}
+
+{% endblock content %}
