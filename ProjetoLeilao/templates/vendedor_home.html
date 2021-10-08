@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% for post in object_list %}
+{% for vendedor in object_list %}
     <div class="vendedor-entry">
         <h2><a href="{% url 'vendedor_detail' vendedor.pk %}">{{ vendedor.nome }}</a></h2>
         <p>{{ vendedor.cpf }}</p> <br/>
