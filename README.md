@@ -6,11 +6,11 @@ O projeto da disciplina é um sistema para leilões online.
 
 As entregas das aulas 2,3 e 4 podem ser encontradas em suas respectivas pastas.
 
-## Implementação do Projeto
+## Entrega Aula 6
 
 A partir da aula 5, o projeto começou a ser implementado no framework **Django**.
 
-O propósito da versão atual do projeto é implementar funcionalidade **CRUD** para as classes **leiloeiro, comprador e vendedor** todas munidas de atributos **nome, cpf e bio**.
+O propósito da versão atual do projeto é implementar models para as classes **Comprador**, **Leiloeiro**, **Vendedor** e realizar migration para banco de dados **MySQL** local.
 
 ### Requirements Python
 
@@ -36,11 +36,7 @@ Importante usar `{% csrf_token %}` para todo formulário Django.
 
 Foram adicionados métodos `get_absolute_url()` e `__str()__` para todos os models.
 
-## Banco de dados sqlite
-
-Para criar banco de dados inicial sqlite
-
-> python manage.py migrate
+## Banco de dados MySQL
 
 Sempre que um novo Model é criado, precisamos atualizar o Django em dois passos.
 
