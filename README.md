@@ -12,6 +12,16 @@ A partir da aula 5, o projeto começou a ser implementado no framework **Django*
 
 O propósito da versão atual do projeto é implementar funcionalidade **CRUD** para as classes **leiloeiro, comprador e vendedor** todas munidas de atributos **nome, cpf e bio**.
 
+### Requirements Python
+
+Na aula 6, passamos a usar banco de dados **MySQL** ao invés de **sqlite**. Portanto, é necessário instalar **pymsql** para executar o projeto.
+
+> pip install pymysql
+
+Para aplicar mudanças no banco de dados, é necessário o pacote **cryptography**.
+
+> pip install cryptography 
+
 ## Criação de Ambiente Virtual pipenv
 
 Para criar e iniciar ambiente virtual com **pipenv**
