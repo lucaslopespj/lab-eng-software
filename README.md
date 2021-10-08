@@ -8,19 +8,9 @@ As entregas das aulas 2,3 e 4 podem ser encontradas em suas respectivas pastas.
 
 ## Entrega Aula 6
 
-A partir da aula 5, o projeto começou a ser implementado no framework **Django**.
+O propósito da versão atual do projeto é implementar models para todas as classes e relacionamentos envolvidas no diagrama ER do sistema e realizar migration para banco de dados **MySQL** local.
 
-O propósito da versão atual do projeto é implementar models para as classes **Comprador**, **Leiloeiro**, **Vendedor** e realizar migration para banco de dados **MySQL** local.
-
-### Requirements Python
-
-Na aula 6, passamos a usar banco de dados **MySQL** ao invés de **sqlite**. Portanto, é necessário instalar **pymsql** para executar o projeto.
-
-> pip install pymysql
-
-Para aplicar mudanças no banco de dados, é necessário o pacote **cryptography**.
-
-> pip install cryptography 
+A entrega também inclui o diagrama entidade relacionamento do sistema.
 
 ## Criação de Ambiente Virtual pipenv
 
@@ -34,7 +24,9 @@ Para criar e iniciar ambiente virtual com **pipenv**
 
 Importante usar `{% csrf_token %}` para todo formulário Django.
 
-Foram adicionados métodos `get_absolute_url()` e `__str()__` para todos os models.
+Foram adicionados métodos `__str()__` para todos os models.
+
+Todas as dependências Python estão no arquivo **requirements.txt** do projeto.
 
 ## Banco de dados MySQL
 
@@ -43,18 +35,6 @@ Sempre que um novo Model é criado, precisamos atualizar o Django em dois passos
 > python manage.py makemigrations
 
 > python manage.py migrate
-
-## Criando superuser
-
-Para interagir com banco de dados na página **admin** foi criado um superuser com o comando
-
-> winpty python manage.py createsuperuser
-
-### Credenciais
-
-Usuário: ArkhamKnightGPC
-
-Senha: password
 
 ## Executando app
 
