@@ -57,6 +57,16 @@ class Lote(models.Model):
     def get_absolute_url(self):
         return reverse('lote_detail', args=[str(self.id)])
 
+
+class Lance(models.Model):
+    valor = models.DecimalField(max_digits=11, decimal_places=2)
+
+    def __str__(self):
+        return self.pk
+
+    def get_absolute_url(self):
+        return reverse('lance_detail', args=[str(self.id)])
+
 class Notificacao(models.Model):
     texto = models.TextField()
 
@@ -150,9 +160,6 @@ class GeracaoDeRelatorio(models.Model):
 
     def __str__(self):
         return "Gerar Relatório"
-
-class Lance(models.Model):
-    valor = models.DecimalField(max_digits=11, decimal_places=2)
 
 class realizado(models.Model): #RELACIONAMENTO 1 Lance, 1 Comprador
     lance = models.OneToOneField(
