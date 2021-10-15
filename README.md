@@ -12,6 +12,10 @@ O propósito da versão atual do projeto é implementar models para todas as cla
 
 A entrega também inclui o diagrama entidade relacionamento do sistema.
 
+## Entrega Aula 7
+
+
+
 ## Criação de Ambiente Virtual pipenv
 
 Para criar e iniciar ambiente virtual com **pipenv**
@@ -19,6 +23,10 @@ Para criar e iniciar ambiente virtual com **pipenv**
 > pipenv install django
 
 > pipenv shell
+
+### Versão Python
+
+Para utilizar pipenv é necessário ter Python na versão **3.10.0**, se você possuir versão mais antiga atualize antes de usar o pipenv.
 
 ## Boas práticas
 
