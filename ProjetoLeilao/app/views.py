@@ -96,12 +96,6 @@ class VendedorDeleteView(DeleteView):
     success_url = reverse_lazy('vendedor_home')
     context_object_name = 'vendedor'
 
-class LoteCreateView(CreateView):
-    model = Lote
-    template_name = 'formulario_ofertar_novo_lote.html'
-    fields = '__all__'
-    context_object_name = 'lote'
-
 class LoteListView(ListView):
     model = Leiloeiro
     template_name = 'lote_home.html'
@@ -112,6 +106,12 @@ class LoteDetailView(DetailView):
     template_name = 'lote_detail.html'
     context_object_name = 'lote'
 
+class LoteCreateView(CreateView):
+    model = Lote
+    template_name = 'formulario_ofertar_novo_lote.html'
+    fields = '__all__'
+    context_object_name = 'lote'
+    
 class LoteUpdateView(UpdateView):
     model = Lote
     fields = ['descricao', 'estadoConservacao'] #Only Editable Fields
