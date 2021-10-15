@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Deletar Lote</h1>
+    <form action="" method="post">{% csrf_token %}
+        <p>Tem certeza que deseja deletar "{{ lote.nome }}"?</p>
+        <input type="submit" value="Confirm" />
+    </form>
+
+{% endblock %}

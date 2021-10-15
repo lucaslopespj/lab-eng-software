@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 
-from .models import Comprador, Leiloeiro, Vendedor
+from .models import Comprador, Leiloeiro, Vendedor, Lote
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -95,3 +95,31 @@ class VendedorDeleteView(DeleteView):
     template_name = 'vendedor_delete.html'
     success_url = reverse_lazy('vendedor_home')
     context_object_name = 'vendedor'
+
+class LoteCreateView(CreateView):
+    model = Lote
+    template_name = 'formulario_ofertar_novo_lote.html'
+    fields = '__all__'
+    context_object_name = 'lote'
+
+class LoteListView(ListView):
+    model = Leiloeiro
+    template_name = 'lote_home.html'
+    context_object_name = 'lote'
+
+class LoteDetailView(DetailView):
+    model = Lote
+    template_name = 'lote_detail.html'
+    context_object_name = 'lote'
+
+class LoteUpdateView(UpdateView):
+    model = Lote
+    fields = ['descricao', 'estadoConservacao'] #Only Editable Fields
+    template_name = 'lote_edit.html'
+    context_object_name = 'lote'
+
+class LoteDeleteView(DeleteView):
+    model = Lote
+    template_name = 'lote_delete.html'
+    success_url = reverse_lazy('lote_home')
+    context_object_name = 'lote'

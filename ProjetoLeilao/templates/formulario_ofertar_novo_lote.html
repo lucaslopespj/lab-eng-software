@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Ofertar Novo Lote</h1>
+
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <p>Deseja confirmar pagamento e continuar ?</p>
+        <input type="submit" value="Save" />
+    </form>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="lote-entry">
+        <h2>{{lote.nome}}</h2>
+        <p>{{ lote.descricao }}</p>
+        <p>{{ lote.estadoConservacao }}</p>
+        <p>{{ lote.estadoVenda }}</p>
+        <p>{{ lote.valorReserva }}</p>
+    </div>
+
+    <a href="{%  url 'lote_edit' lote.pk %}">+ Editar Lote</a>
+    <a href="{%  url 'lote_delete' lote.pk %}">+ Deletar Lote</a>
+
+{% endblock content %}

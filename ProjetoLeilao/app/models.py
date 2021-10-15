@@ -36,7 +36,7 @@ class Vendedor(models.Model):
         return reverse('vendedor_detail', args=[str(self.id)])
 
 class Lote(models.Model):
-    nome = models.TextField()
+    nome = models.CharField(max_length=200)
     descricao = models.TextField()
     estadoConservacao = models.TextField(
         choices = [('VELHO', 'VELHO'),
@@ -54,6 +54,8 @@ class Lote(models.Model):
     def __str__(self):
         return self.nome
 
+    def get_absolute_url(self):
+        return reverse('lote_detail', args=[str(self.id)])
 
 class Notificacao(models.Model):
     texto = models.TextField()

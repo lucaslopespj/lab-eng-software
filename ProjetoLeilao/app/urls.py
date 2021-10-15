@@ -31,6 +31,15 @@ urlpatterns = [
     path('vendedor/<int:pk>/delete/',
          views.VendedorDeleteView.as_view(), name='vendedor_delete'),
 
+     #Views Lote
+     path('lote/', views.LoteListView.as_view(), name='lote_home'),
+     path('lote/<int:pk>/', views.LoteDetailView.as_view(), name='lote_detail'),
+     path('lote/new/', views.LoteCreateView.as_view(), name='formulario_ofertar_novo_lote'),
+     path('lote/<int:pk>/edit/',
+         views.LoteUpdateView.as_view(), name='lote_edit'),
+     path('lote/<int:pk>/delete/',
+         views.LoteDeleteView.as_view(), name='lote_delete'),
+
     #Home Page
     path('', views.HomeView.as_view(), name='home'),
 ]

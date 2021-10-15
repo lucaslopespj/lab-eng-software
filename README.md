@@ -14,7 +14,18 @@ A entrega também inclui o diagrama entidade relacionamento do sistema.
 
 ## Entrega Aula 7
 
+A template **base.html** possui header e footer comuns para todas as nossas views.
 
+A template **home.html** é a página inicial de nosso Diagrama de Navegação.
+
+
+### Templates associadas a funções CRUD
+
+As templates **comprador_home.html**, **comprador_new.html**, **comprador_edit.html**, **comprador_detail.html**, **comprador_delete.html** estão associadas as funções CRUD do model Comprador.
+
+As templates **leiloeiro_home.html**, **leiloeiro_new.html**, **leiloeiro_edit.html**, **leiloeiro_detail.html**, **leiloeiro_delete.html** estão associadas as funções CRUD do model Leiloeiro.
+
+As templates **vendedor_home.html**, **vendedor_new.html**, **vendedor_edit.html**, **vendedor_detail.html**, **vendedor_delete.html** estão associadas as funções CRUD do model Vendedor.
 
 ## Criação de Ambiente Virtual pipenv
 
