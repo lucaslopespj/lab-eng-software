@@ -1,5 +1,4 @@
-from django.urls import path
-
+from django.urls import include, path
 from . import views
 
 urlpatterns = [
@@ -42,4 +41,10 @@ urlpatterns = [
 
     #Home Page
     path('', views.HomeView.as_view(), name='home'),
+
+    #Cadastro
+    path('contas/', include('django.contrib.auth.urls')),
+    path('contas/cadastrar/', views.SignUpView.as_view(), name='cadastrar'),
+    path('contas/cadastrar/cliente/', views.CadastrarClienteView.as_view(), name='cadastrar_cliente'),
+    path('contas/cadastrar/admin/', views.CadastrarAdminView.as_view(), name='cadastrar_admin'),
 ]

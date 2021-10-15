@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic import ListView, DetailView
 
@@ -8,7 +8,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 
-from .models import Comprador, Leiloeiro, Vendedor, Lote
+from django.contrib.auth import login
+
+from . import forms
+
+from .models import Usuario, Comprador, Leiloeiro, Vendedor, Lote
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -123,3 +127,5 @@ class LoteDeleteView(DeleteView):
     template_name = 'lote_delete.html'
     success_url = reverse_lazy('lote_home')
     context_object_name = 'lote'
+
+#CADASTRO
