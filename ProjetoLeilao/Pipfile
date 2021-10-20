@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 django = "*"
+pymysql = "*"
+python-dotenv = "*"
+django-bootstrap4 = "*"
 
 [dev-packages]
 

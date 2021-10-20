@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Se cadastre com uma conta gratuita!</h2>
+  <p>Como você pretende usar o site ?</p>
+  <a href="{% url 'leiloeiro_signup' %}" class="btn btn-student btn-lg" role="button">Eu sou um Leiloeiro</a>
+  <a href="{% url 'cliente_signup' %}" class="btn btn-teacher btn-lg" role="button">Eu sou um Cliente(Comprador ou Vendedor)</a>
+{% endblock %}
