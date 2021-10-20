@@ -31,7 +31,7 @@ O projeto utiliza um banco MySQL local com as seguintes especificações **setti
 
 Primeiramente é necessário instalar o **pipenv**
 
-> pip install env
+> pip install pipenv
 
 Então na pasta **ProjetoLeilao**, ativar o ambiente virtual
 
