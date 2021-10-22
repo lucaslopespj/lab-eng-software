@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Realizar lance
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.first_name == "['cliente']" %}
+            <h2>Realizar lance</h2>
+            <br/><br/>
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button class="btn btn-secondary">Confirmar Pagamento</button>
+                </form>
+            </div>
+
+            <script>
+                var cliente_id = "{{ user.id }}";
+                document.getElementById("cliente_comprador_lance_mais_alto_field").value = cliente_id;
+            </script>
+        {% else %}
+            <h2>Apenas usuários clientes podem realizar lances!</h2>
+        {% endif %}
+    {% else %}
+       <h2>Por favor, faça login para realizar lances!</h2>
+    {% endif %}
+{% endblock %}

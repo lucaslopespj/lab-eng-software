@@ -1,50 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.urls import reverse
-from django.db.models import ForeignKey
+from datetime import datetime, date
 
-class Conta(AbstractUser):
-    """
-    Define tipo de usuario: Leiloeiro ou Cliente(comprador/vendedor)
-    """
-    eh_Leiloeiro = models.BooleanField(default = False)
-    eh_Cliente = models.BooleanField(default = False)
-
-
-class Leiloeiro(models.Model):
-    """
-    Model de usuario tipo Leiloeiro
-    """
-    conta = models.OneToOneField(Conta, on_delete=models.CASCADE, primary_key=True)
-    username = models.CharField(max_length = 30)
-    nome = models.CharField(max_length=30)
-    sobrenome = models.CharField(max_length=30)
-    email = models.EmailField()
-    saldo = models.DecimalField(max_digits=11, decimal_places=2)
-    def __str__(self):
-        return self.email
-
-
-class Cliente(models.Model):
-    """
-    Model de usuario tipo Cliente
-    """
-    conta = models.OneToOneField(Conta, on_delete=models.CASCADE, primary_key=True)
-    username = models.CharField(max_length=30)
-    nome = models.CharField(max_length=30)
-    sobrenome = models.CharField(max_length=30)
-    email = models.EmailField()
-    saldo = models.DecimalField(max_digits=11, decimal_places=2)
-    def __str__(self):
-        return self.email
-
+# Create your models here.
 
 class Lote(models.Model):
-    """
-    Model de lote de produtos
-    """
-    vendedor_id = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=20)
+    cliente_vendedor = models.ForeignKey(User, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=200)
     descricao = models.TextField()
     estado_conservacao = models.TextField(
         choices=[('VELHO', 'VELHO'),
@@ -53,6 +16,13 @@ class Lote(models.Model):
         default='VELHO',
     )
     valor_reserva = models.DecimalField(max_digits=11, decimal_places=2)
+    data_inicio = models.DateTimeField(auto_now_add=True)
+    data_final = models.DateTimeField()
+    valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
 
     def __str__(self):
-        return self.nome
+        return self.nome + " | " + str(self.cliente_vendedor)
+
+    def get_absolute_url(self):
+        return reverse('lote_detail', args=(str(self.id)))

@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('contas/', include('django.contrib.auth.urls')),
-    path('contas/signup/', views.SignUpView.as_view(), name='signup'),
-    path('contas/signup/leiloeiro/', views.LeiloeiroSignUpView.as_view(), name='leiloeiro_signup'),
-    path('contas/signup/cliente/', views.ClienteSignUpView.as_view(), name='cliente_signup'),
+    path('exclusiva/', views.AreaExclusivaView.as_view(), name='area_exclusiva'),
+    path('lote/<int:pk>/', views.LoteDetailView.as_view(), name="lote_detail"),
+    path('lote/add/', views.LoteAddView.as_view(), name="lote_add"),
+    path('lote/lance/<int:pk>/', views.LoteLanceView.as_view(), name="lote_lance"),
 ]

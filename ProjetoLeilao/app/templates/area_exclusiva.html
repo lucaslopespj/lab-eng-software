@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Área Exclusiva
+{% endblock %}
+
+{% block content %}
+    {% if user.first_name == "['leiloeiro']" %}
+        <h1> Leiloeiro, seja bem-vindo a Área Exclusiva </h1> <br/>
+        <h2> Estamos adicionando funcionalidades para você ... </h2>
+    {% else %}
+        <h1> Esta página é apenas para Leiloeiros! </h1> <br/>
+    {% endif %}
+{% endblock %}

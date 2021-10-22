@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'user_auth',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,7 @@ WSGI_APPLICATION = 'ProjetoLeilao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'projetoleilaopcs3643',
+        'NAME': 'projetoleilao',
         'USER': 'nameuser',
         'PASSWORD': 'pass',
         'HOST': 'localhost',
@@ -125,3 +126,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.environ.get('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')
+
+# LOGIN e LOGOUT
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
