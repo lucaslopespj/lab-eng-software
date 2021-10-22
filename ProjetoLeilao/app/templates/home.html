@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Projeto Leilão
+{% endblock %}
+
+{% block content %}
+<h1> Confira nossos Lotes! </h1>
+
+<ul>
+{% for lote in object_list %}
+    <li> <a href="{% url 'lote_detail' lote.pk %}">{{ lote.nome }}</a> - {{ lote.cliente_vendedor.username }}<br/>
+    <p> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</p>
+    {{ lote.descricao|slice:"200"}}<br/>
+    {% if user.is_authenticated %}
+        {% if user.first_name == "['cliente']" %}
+            <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+        {% endif %}
+    {% else %}
+        <it>Para fazer seu lance, cadastre-se ou faça login!</it>
+    {% endif %}
+    </li> <br/><br/>
+{% endfor %}
+</ul>
+{% endblock %}

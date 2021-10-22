@@ -1,131 +1,34 @@
 from django.shortcuts import render, redirect
-
 from django.views.generic import ListView, DetailView
-
-from django.views.generic.base import TemplateView
-
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
 
 from django.contrib.auth import login
-
+from django.core.mail import send_mail
 from . import forms
+from . import models
 
-from .models import Usuario, Comprador, Leiloeiro, Vendedor, Lote
+# Create your views here
 
-class HomeView(TemplateView):
+class Home(ListView):
+    model = models.Lote
     template_name = 'home.html'
-
-class CompradorListView(ListView):
-    model = Comprador
-    template_name = 'comprador_home.html'
-
-class CompradorDetailView(DetailView):
-    model = Comprador
-    template_name = 'comprador_detail.html'
-    context_object_name = 'comprador'
-
-class CompradorCreateView(CreateView):
-    model = Comprador
-    template_name = 'comprador_new.html'
-    fields = '__all__'
-    context_object_name = 'comprador'
-
-class CompradorUpdateView(UpdateView):
-    model = Comprador
-    fields = ['bio'] #Only Editable Fields
-    template_name = 'comprador_edit.html'
-    context_object_name = 'comprador'
-
-class CompradorDeleteView(DeleteView):
-    model = Comprador
-    template_name = 'comprador_delete.html'
-    success_url = reverse_lazy('comprador_home')
-    context_object_name = 'comprador'
-
-class LeiloeiroListView(ListView):
-    model = Leiloeiro
-    template_name = 'leiloeiro_home.html'
-    context_object_name = 'leiloeiro'
-
-class LeiloeiroDetailView(DetailView):
-    model = Leiloeiro
-    template_name = 'leiloeiro_detail.html'
-    context_object_name = 'leiloeiro'
-
-class LeiloeiroCreateView(CreateView):
-    model = Leiloeiro
-    template_name = 'leiloeiro_new.html'
-    fields = '__all__'
-    context_object_name = 'leiloeiro'
-
-class LeiloeiroUpdateView(UpdateView):
-    model = Leiloeiro
-    fields = ['bio'] #Only Editable Fields
-    template_name = 'leiloeiro_edit.html'
-    context_object_name = 'leiloeiro'
-
-class LeiloeiroDeleteView(DeleteView):
-    model = Leiloeiro
-    template_name = 'leiloeiro_delete.html'
-    success_url = reverse_lazy('leiloeiro_home')
-    context_object_name = 'leiloeiro'
-
-class VendedorListView(ListView):
-    model = Vendedor
-    template_name = 'vendedor_home.html'
-    context_object_name = 'vendedor'
-
-class VendedorDetailView(DetailView):
-    model = Vendedor
-    template_name = 'vendedor_detail.html'
-    context_object_name = 'vendedor'
-
-class VendedorCreateView(CreateView):
-    model = Vendedor
-    template_name = 'vendedor_new.html'
-    fields = '__all__'
-    context_object_name = 'vendedor'
-
-class VendedorUpdateView(UpdateView):
-    model = Vendedor
-    fields = ['bio'] #Only Editable Fields
-    template_name = 'vendedor_edit.html'
-    context_object_name = 'vendedor'
-
-class VendedorDeleteView(DeleteView):
-    model = Vendedor
-    template_name = 'vendedor_delete.html'
-    success_url = reverse_lazy('vendedor_home')
-    context_object_name = 'vendedor'
-
-class LoteListView(ListView):
-    model = Leiloeiro
-    template_name = 'lote_home.html'
-    context_object_name = 'lote'
+    ordering = ['-data_inicio']
 
 class LoteDetailView(DetailView):
-    model = Lote
+    model = models.Lote
     template_name = 'lote_detail.html'
-    context_object_name = 'lote'
 
-class LoteCreateView(CreateView):
-    model = Lote
-    template_name = 'formulario_ofertar_novo_lote.html'
-    fields = '__all__'
-    context_object_name = 'lote'
-    
-class LoteUpdateView(UpdateView):
-    model = Lote
-    fields = ['descricao', 'estadoConservacao'] #Only Editable Fields
-    template_name = 'lote_edit.html'
-    context_object_name = 'lote'
+class LoteAddView(CreateView):
+    model = models.Lote
+    form_class = forms.LoteCreateForm
+    template_name = 'lote_add.html'
 
-class LoteDeleteView(DeleteView):
-    model = Lote
-    template_name = 'lote_delete.html'
-    success_url = reverse_lazy('lote_home')
-    context_object_name = 'lote'
+class LoteLanceView(UpdateView):
+    model = models.Lote
+    form_class = forms.LoteUpdateForm
+    template_name = 'lote_lance.html'
 
-#CADASTRO
+class AreaExclusivaView(TemplateView):
+    template_name = 'area_exclusiva.html'
