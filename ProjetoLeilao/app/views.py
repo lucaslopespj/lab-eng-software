@@ -30,5 +30,9 @@ class LoteLanceView(UpdateView):
     form_class = forms.LoteUpdateForm
     template_name = 'lote_lance.html'
 
+class LoteCancelView(DeleteView):
+    model = models.Lote
+    template_name = 'lote_cancel.html'
+
 class AreaExclusivaView(TemplateView):
     template_name = 'area_exclusiva.html'

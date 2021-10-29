@@ -15,11 +15,14 @@ class Lote(models.Model):
                  ('NOVO', 'NOVO')],
         default='VELHO',
     )
+    valor_minimo_lance = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    valor_minimo_incremento_por_lance = models.DecimalField(max_digits=11, decimal_places=2, default=0.01)
     valor_reserva = models.DecimalField(max_digits=11, decimal_places=2)
     data_inicio = models.DateTimeField(auto_now_add=True)
     data_final = models.DateTimeField()
     valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
+    taxa_cancelamento = models.DecimalField(max_digits=11, decimal_places=2, default=0)
 
     def __str__(self):
         return self.nome + " | " + str(self.cliente_vendedor)
