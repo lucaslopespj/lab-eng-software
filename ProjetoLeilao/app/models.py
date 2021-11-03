@@ -22,10 +22,24 @@ class Lote(models.Model):
     data_final = models.DateTimeField()
     valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
-    taxa_cancelamento = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    taxa_comissao = models.DecimalField(max_digits=11, decimal_places=2, default=0)
 
     def __str__(self):
         return self.nome + " | " + str(self.cliente_vendedor)
 
     def get_absolute_url(self):
         return reverse('lote_detail', args=(str(self.id)))
+
+class Saldo(models.Model): #Saldo disponivel para cliente(comprador/vendedor)
+    username_cliente = models.CharField(max_length=150)
+    valor = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+
+    def __str__(self):
+        return str(self.cliente)
+
+class Pagamento(models.Model): #Comissoes pagas ao leilao, usadas para gerar relatorios
+    valor = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.valor) + " " + str(self.data)

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
@@ -36,3 +36,12 @@ class LoteCancelView(DeleteView):
 
 class AreaExclusivaView(TemplateView):
     template_name = 'area_exclusiva.html'
+
+class SaldoUpdateView(FormView):
+    form_class = forms.saldoUpdateForm
+    template_name = 'saldo_update.html'
+    success_url = '/'
+
+class SaldoCheckView(ListView):
+    model = models.Saldo
+    template_name = 'saldo_list.html'

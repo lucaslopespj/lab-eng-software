@@ -104,4 +104,8 @@ Segue screenshot com a saída dos testes executados:
 
 - [How to raise form validation errors](https://docs.djangoproject.com/en/dev/topics/forms/modelforms/#overriding-the-clean-method)
 
+- [Linking user model to a custom profile model](https://prog.world/one-to-one-relationship-linking-a-user-model-to-a-custom-profile-model-in-django/)
+
+- [Making database queries in Django](https://docs.djangoproject.com/en/3.2/topics/db/queries/)
+
 - [How to output PDFs in Django](https://docs.djangoproject.com/en/3.2/howto/outputting-pdf/)

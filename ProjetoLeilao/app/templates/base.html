@@ -26,6 +26,8 @@
                     {% if user.is_authenticated %}
                         {% if user.first_name == "['cliente']" %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'lote_add' %}">Ofertar Lote</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'saldo_update' %}">Atualizar Saldo</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'saldo_check' %}">Conferir Saldo</a></li>
                         {% else %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'area_exclusiva' %}">Área Exclusiva(Leiloeiros)</a></li>
                         {% endif %}

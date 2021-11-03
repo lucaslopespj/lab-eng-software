@@ -1,30 +1,31 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Ofertar Lote
+    Atualizar saldo
 {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         {% if user.first_name == "['cliente']" %}
-            <h2>Ofertar lote de produtos</h2>
+            <h2>Insira seu valor atual de saldo bancário</h2>
             <br/><br/>
             <div class="form-group">
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button class="btn btn-secondary">Ofertar Lote</button>
+
+                    <button class="btn btn-secondary">Atualizar Saldo</button>
                 </form>
             </div>
-            <p>Exemplo de datetime para formulário: 2014-11-18 00:00:00</p>
+
             <script>
-                var cliente_id = "{{ user.id }}";
-                document.getElementById("cliente_vendedor_field").value = cliente_id;
+                var username_cliente = "{{ user.username }}";
+                document.getElementById("username_cliente_field").value = username_cliente;
             </script>
         {% else %}
-            <h2>Apenas usuários clientes podem ofertar lotes de produtos!</h2>
+            <h2>Apenas usuários clientes possuem saldos bancários!</h2>
         {% endif %}
     {% else %}
-        <h2>Para ofertar um lote, você precisa fazer Login!</h2>
+       <h2>Essa área do site é restrita.</h2>
     {% endif %}
 {% endblock %}

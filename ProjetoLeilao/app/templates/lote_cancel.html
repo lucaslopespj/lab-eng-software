@@ -13,8 +13,8 @@
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <strong>Taxa de cancelamento: {{ lote.taxa_cancelamento }}</strong><br/>
-                    <button class="btn btn-secondary">Pagar e cancelar</button>
+                    <strong>Tem certeza ? A taxa de comissão paga não será reembolsada</strong><br/>
+                    <button class="btn btn-secondary">Confirmar e cancelar</button>
                 </form>
             </div>
         {% else %}

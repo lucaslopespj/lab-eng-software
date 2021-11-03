@@ -120,13 +120,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Twilio SendGrid
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.environ.get('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')
-
 # LOGIN e LOGOUT
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
