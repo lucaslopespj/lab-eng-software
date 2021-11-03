@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Relatório
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.first_name == "['leiloeiro']" %}
+        {% if not data_inicio_relatorio %}
+            <h2>Acesse sua área exclusiva para gerar relatórios</h2>
+        {% else %}
+            <h2>Pagamentos do periodo: {{data_inicio_relatorio}} - {{data_final_relatorio}}</h2>
+            <ul>
+                {% for pagamento in object_list %}
+                    {% if pagamento.data >= data_inicio_relatorio and pagamento.data <= data_final_relatorio %}
+                        <li>
+                            {{pagamento.data}} <br/>
+                            <strong>valor = {{ pagamento.valor }}</strong>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <h2>Apenas usuários leiloeiros podem emitir relatórios!</h2>
+    {% endif %}
+{% else %}
+    <h2>Apenas usuários leiloeiros podem emitir relatórios!</h2>
+{% endif %}
+{% endblock %}

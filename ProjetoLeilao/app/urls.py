@@ -10,4 +10,5 @@ urlpatterns = [
     path('lote/cancel/<int:pk>/', views.LoteCancelView.as_view(), name="lote_cancel"),
     path('saldo/update/', views.SaldoUpdateView.as_view(), name="saldo_update"),
     path('saldo/confere/', views.SaldoCheckView.as_view(), name="saldo_check"),
+    path('exclusiva/relatorio/', views.RelatorioView.as_view(), name='relatorio'),
 ]

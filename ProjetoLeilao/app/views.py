@@ -34,8 +34,19 @@ class LoteCancelView(DeleteView):
     model = models.Lote
     template_name = 'lote_cancel.html'
 
-class AreaExclusivaView(TemplateView):
+class AreaExclusivaView(FormView): #Formulario para Gerar Relatório
+    form_class = forms.gerarRelatorio
     template_name = 'area_exclusiva.html'
+    success_url = 'relatorio'
+
+class RelatorioView(ListView): #View para exibir relatorio
+    model = models.Pagamento
+    template_name = 'relatorio.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data_inicio_relatorio'] = forms.data_inicio_relatorio
+        context['data_final_relatorio'] = forms.data_final_relatorio
+        return context
 
 class SaldoUpdateView(FormView):
     form_class = forms.saldoUpdateForm

@@ -69,9 +69,19 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 - Página exclusiva para usuário Leiloeiro
 
-- Ofertar lote de produto (apenas para usuário Cliente!!)
+#### Para usuário cliente
 
-- Realizar lance em lote de produto (apenas para usuário Cliente!!)
+- Ofertar lote de produto (vendedor paga taxa de comissão)
+
+- Realizar lance em lote de produto (saldo de compradores e vendedores envolvidos é atualizado) 
+
+- Atualizar saldo bancário
+
+- Conferir saldo bancário
+
+#### Para usuário Leiloeiro (página exclusiva)
+
+- Gerar Relatórios
 
 > Lances abaixo do maior lance atual são rejeitados !
 

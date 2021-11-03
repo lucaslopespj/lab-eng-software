@@ -2,6 +2,8 @@ import decimal
 from django import forms
 from datetime import datetime
 import pytz
+from django.template import Context, Template
+
 from . import models
 
 class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
@@ -124,6 +126,8 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
             valor_antigo_total = valor_antigo_lance + decimal.Decimal(valor_antigo_comissao)
             saldo_antigo_comprador.valor = saldo_antigo_comprador.valor + decimal.Decimal(valor_antigo_total)
             saldo_antigo_comprador.save()
+            pagamento = models.Pagamento(valor = decimal.Decimal(-valor_antigo_comissao))
+            pagamento.save()
         #ok, vamos adicionar pagamento ao leilao
         pagamento = models.Pagamento(valor=self.instance.taxa_comissao)
         pagamento.save()
@@ -147,3 +151,20 @@ class saldoUpdateForm(forms.ModelForm): #Atualizar saldo
         saldo_cliente = models.Saldo.objects.all().get(username_cliente=username_cliente_formulario)
         saldo_cliente.valor = valor_formulario
         saldo_cliente.save()
+
+data_inicio_relatorio = None
+data_final_relatorio = None
+
+class gerarRelatorio(forms.Form):
+    # filtrar pagamentos realizados entre certas datas
+    data_inicio = forms.DateTimeField(widget = forms.DateTimeInput())
+    data_final = forms.DateTimeField(widget = forms.DateTimeInput())
+
+    def clean(self):
+        # PRIMEIRA VALIDACAO: data inicio precisa ser menor que data final
+        if(self.cleaned_data['data_inicio'] > self.cleaned_data['data_final']):
+            raise forms.ValidationError('Datas inseridas são inválidas')
+        global data_inicio_relatorio
+        data_inicio_relatorio = self.cleaned_data['data_inicio']
+        global data_final_relatorio
+        data_final_relatorio = self.cleaned_data['data_final']

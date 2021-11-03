@@ -7,7 +7,16 @@
 {% block content %}
     {% if user.first_name == "['leiloeiro']" %}
         <h1> Leiloeiro, seja bem-vindo a Área Exclusiva </h1> <br/>
-        <h2> Estamos adicionando funcionalidades para você ... </h2>
+        <h3> Aqui você pode gerar relatórios do faturamento do leilão </h3>
+        <br/><br/>
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Gerar Relatório</button>
+            </form>
+        </div>
+        <p>Exemplo de datetime para formulário: 2014-11-18 00:00:00</p>
     {% else %}
         <h1> Esta página é apenas para Leiloeiros! </h1> <br/>
     {% endif %}
