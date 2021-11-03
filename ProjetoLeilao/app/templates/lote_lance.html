@@ -20,7 +20,9 @@
 
             <script>
                 var cliente_id = "{{ user.id }}";
+                var cliente_username = "{{ user.username }}";
                 document.getElementById("cliente_comprador_lance_mais_alto_field").value = cliente_id;
+                document.getElementById("cliente_comprador_username_field").value = cliente_username;
             </script>
         {% else %}
             <h2>Apenas usuários clientes podem realizar lances!</h2>

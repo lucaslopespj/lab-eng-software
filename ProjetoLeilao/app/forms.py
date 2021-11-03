@@ -51,6 +51,10 @@ class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
 
 
 class LoteUpdateForm(forms.ModelForm): #Realizar Lance
+
+    cliente_comprador_username = forms.CharField(max_length = 150, widget=forms.HiddenInput(
+                attrs={'class': 'form-control', 'value': '', 'id': 'cliente_comprador_username_field', 'type': 'hidden', 'is_required':'True'}))
+
     class Meta:
         model = models.Lote
         fields = ('valor_lance_mais_alto', 'cliente_comprador_lance_mais_alto')
@@ -94,14 +98,15 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
             valor_comissao = 7 * float(valor_lance) / 100.00  # taxa de 7%
         valor_total = valor_lance + decimal.Decimal(valor_comissao)
         #QUINTA VALIDACAO: Comprador precisar ter saldo suficiente
-        saldo_comprador = models.Saldo.objects.all().get(username_cliente = self.cleaned_data['cliente_comprador_lance_mais_alto'])
+        saldo_comprador = models.Saldo.objects.all().get(username_cliente = self.cleaned_data['cliente_comprador_username'])
         if(saldo_comprador.valor < valor_total):
             raise forms.ValidationError('Seu saldo de ' + str(saldo_comprador.valor) + ' não é suficiente para pagar o valor total ' + str(valor_total))
         #ok, vamos descontar valor total a ser pago do saldo
-        saldo_comprador.valor -= decimal.Decimal(valor_total)
+        saldo_comprador.valor = saldo_comprador.valor - decimal.Decimal(valor_total)
         saldo_comprador.save()
         #ok, vamos reembolsar comprador anterior!!
         valor_antigo_total = 0
+        valor_antigo_lance = 0
         if(self.instance.cliente_comprador_lance_mais_alto != None):
             saldo_antigo_comprador = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_comprador_lance_mais_alto.username)
             valor_antigo_lance = self.instance.valor_lance_mais_alto
@@ -116,15 +121,15 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
                 valor_antigo_comissao = 6 * float(valor_antigo_lance) / 100.00  # taxa de 6%
             else:
                 valor_antigo_comissao = 7 * float(valor_antigo_lance) / 100.00  # taxa de 7%
-            valor_antigo_total = valor_antigo_lance + valor_antigo_comissao
-            saldo_antigo_comprador.valor += decimal.Decimal(valor_antigo_total)
+            valor_antigo_total = valor_antigo_lance + decimal.Decimal(valor_antigo_comissao)
+            saldo_antigo_comprador.valor = saldo_antigo_comprador.valor + decimal.Decimal(valor_antigo_total)
             saldo_antigo_comprador.save()
         #ok, vamos adicionar pagamento ao leilao
         pagamento = models.Pagamento(valor=self.instance.taxa_comissao)
         pagamento.save()
         #ok, vamos adicionar saldo ao vendedor
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_vendedor.username)
-        saldo_vendedor.valor += valor_total - valor_antigo_total
+        saldo_vendedor.valor = saldo_vendedor.valor + valor_lance - valor_antigo_lance
         saldo_vendedor.save()
 
 class saldoUpdateForm(forms.ModelForm): #Atualizar saldo
