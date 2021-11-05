@@ -33,6 +33,7 @@ class LoteLanceView(UpdateView):
 class LoteCancelView(DeleteView):
     model = models.Lote
     template_name = 'lote_cancel.html'
+    success_url = '/'
 
 class AreaExclusivaView(FormView): #Formulario para Gerar Relatório
     form_class = forms.gerarRelatorio

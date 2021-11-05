@@ -8,6 +8,7 @@ django = "*"
 pymysql = "*"
 python-dotenv = "*"
 django-bootstrap4 = "*"
+selenium = "*"
 
 [dev-packages]
 

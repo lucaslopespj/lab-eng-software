@@ -31,9 +31,9 @@ O projeto utiliza um banco MySQL local com as seguintes especificações **setti
 
  Para executar o projeto localmente é necessário criar esse database localmente e fornecer permissões ao user.
 
-> CREATE DATABASE nomeDB; 
+> CREATE DATABASE projetoleilao; 
 > CREATE USER nameuser@localhost IDENTIFIED BY 'pass';
-> GRANT ALL PRIVILEGES ON nomeDB.* TO nameuser@localhost;
+> GRANT ALL PRIVILEGES ON projetoleilao.* TO nameuser@localhost;
 > FLUSH PRIVILEGES; 
 
 
@@ -89,11 +89,13 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 ### Quais testes foram implementados ?
 
-Foi implementado o arquivo ***test_models.py*** que realiza testes unitários sobre o model ***Lote***.
+A pasta de testes, incluindo todos os arquivos de teste, possui caminho **ProjetoLeilao/app/tests**.
 
-O pacote ***TestCase*** do Django cria um banco de dados teste.
+#### test_models.py
 
-Portanto, ***antes de executar testes*** é necessário fornecer permissão para o user definido em ***settings.py*** acessar o banco de dados de teste:
+Foi implementado o arquivo ***test_models.py*** que realiza testes unitários sobre os models ***Lote***, ***Saldo*** e ***Pagamento***.
+
+O pacote ***TestCase*** do Django cria um banco de dados teste. Portanto, ***antes de executar testes*** é necessário fornecer permissão para o user definido em ***settings.py*** acessar o banco de dados de teste:
 
 > GRANT ALL PRIVILEGES ON test_projetoleilao.* TO nameuser@localhost;
 > FLUSH PRIVILEGES; 
@@ -102,9 +104,35 @@ O comando para executar os testes montados é:
 
 > python manage.py test app.tests
 
-Segue screenshot com a saída dos testes executados:
+![test_models.py](TestesModels.png)
 
-![Teste do Model Lote](TesteLote.png)
+#### Selenium IDE
+
+Na aula 9, foram realizados testes para a interface com o usuário utilizando a Selenium IDE. O projeto se encontra no arquivo ***ProjetoLeilao.side***.
+
+Os casos de teste realizados estão listados abaixo. É importante utilizar o comando
+
+> python manage.py flush
+
+antes de realizar os testes para limpar todas as tabelas do banco de dados. Também é necessário subir o servidor Django antes de executar os testes com o comando
+
+> python manage.py runserver
+
+Observação: é importante realizar os testes ***na ordem listada***, uma vez que, por exemplo, é importante ter o usuário cadastrado para fazer login.
+
+- ***1_Cadastro_ClienteTeste***: Cadastro de usuário do tipo cliente com username ClienteTeste. 
+
+- ***2_Cadastro_ClienteTeste2***: Cadastro de usuário do tipo cliente com username ClienteTeste2. 
+
+- ***3_Cadastro_LeiloeiroTeste***: Cadastro de usuário do tipo leiloeiro com username LeiloeiroTeste.
+
+- ***4_Ofertar_Lote***: ClienteTeste oferta lote **Caderno de 96 folhas**.
+
+- ***5_Realizar_Lance***: ClienteTeste2 realiza lance no lote **Caderno de 96 folhas**.
+
+- ***6_Gerar_Relatorio***: Leiloeiro teste gera relatório contendo taxas de comissão pagas.  
+
+![TestesSelenium](TestesSelenium.png)
 
 ## Referências e recursos importantes
 

@@ -129,7 +129,7 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
             pagamento = models.Pagamento(valor = decimal.Decimal(-valor_antigo_comissao))
             pagamento.save()
         #ok, vamos adicionar pagamento ao leilao
-        pagamento = models.Pagamento(valor=self.instance.taxa_comissao)
+        pagamento = models.Pagamento(valor=valor_comissao)
         pagamento.save()
         #ok, vamos adicionar saldo ao vendedor
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_vendedor.username)

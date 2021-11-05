@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils import timezone
-from app.models import Lote
+from app.models import Lote, Saldo, Pagamento
 
 # Create your tests here.
 
@@ -63,3 +63,44 @@ class LoteModelTestCase(TestCase):
         lote = Lote.objects.get(id = 1)
         valor_estado_conservacao = '{0}'.format(lote.estado_conservacao)
         self.assertEquals(valor_estado_conservacao, 'VELHO')
+
+class SaldoModelTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Saldo.objects.create(username_cliente='VENDEDOR', valor=20)
+
+    def teste_label_username_cliente(self):
+        field_username_cliente = Saldo._meta.get_field('username_cliente').verbose_name
+        self.assertEquals(field_username_cliente, 'username cliente')
+
+    def teste_label_valor(self):
+        field_valor = Saldo._meta.get_field('valor').verbose_name
+        self.assertEquals(field_valor, 'valor')
+
+    def teste_valor_username_cliente(self):
+        saldo = Saldo.objects.get(id = 1)
+        valor_username_cliente = '{0}'.format(saldo.username_cliente)
+        self.assertEquals(valor_username_cliente, 'VENDEDOR')
+
+    def teste_valor_valor(self):
+        saldo = Saldo.objects.get(id = 1)
+        valor_valor = '{0}'.format(saldo.valor)
+        self.assertEquals(valor_valor, '20.00')
+
+class PagamentoModelTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Pagamento.objects.create(valor=1)
+
+    def teste_label_valor(self):
+        field_valor = Pagamento._meta.get_field('valor').verbose_name
+        self.assertEquals(field_valor, 'valor')
+
+    def teste_label_data(self):
+        field_data = Pagamento._meta.get_field('data').verbose_name
+        self.assertEquals(field_data, 'data')
+
+    def teste_valor_valor(self):
+        pagamento = Pagamento.objects.get(id = 1)
+        valor_valor = '{0}'.format(pagamento.valor)
+        self.assertEquals(valor_valor, '1.00')
