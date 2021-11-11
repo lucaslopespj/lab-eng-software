@@ -25,6 +25,11 @@ class LoteAddView(CreateView):
     form_class = forms.LoteCreateForm
     template_name = 'lote_add.html'
 
+class LoteLiberarView(UpdateView):
+    model = models.Lote
+    form_class = forms.LoteLiberarForm
+    template_name = 'lote_liberar.html'
+
 class LoteLanceView(UpdateView):
     model = models.Lote
     form_class = forms.LoteUpdateForm

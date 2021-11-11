@@ -23,6 +23,8 @@ class Lote(models.Model):
     valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
     taxa_comissao = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    numero_de_lances = models.DecimalField(max_digits=11, decimal_places=0, default=0)
+    liberado_para_lances = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nome + " | " + str(self.cliente_vendedor)

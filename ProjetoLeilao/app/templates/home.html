@@ -16,6 +16,10 @@
         {% if user.first_name == "['cliente']" %}
             <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
         {% endif %}
+
+        {% if lote.liberado_para_lances == False %}
+                <strong>Leiloeiro, esse lote ainda não foi liberado para lances!!</strong>
+        {% endif %}
     {% else %}
         <it>Para fazer seu lance, cadastre-se ou faça login!</it>
     {% endif %}

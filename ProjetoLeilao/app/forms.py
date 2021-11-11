@@ -50,7 +50,14 @@ class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
         pagamento = models.Pagamento(valor = self.instance.taxa_comissao)
         pagamento.save()
 
+class LoteLiberarForm(forms.ModelForm): #Leiloeiro libera lote para lances
 
+    class Meta:
+        model = models.Lote
+        fields = ('liberado_para_lances',)
+        widgets = {
+            'liberado_para_lances': forms.CheckboxInput(),
+        }
 
 class LoteUpdateForm(forms.ModelForm): #Realizar Lance
 
@@ -135,6 +142,9 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_vendedor.username)
         saldo_vendedor.valor = saldo_vendedor.valor + valor_lance - valor_antigo_lance
         saldo_vendedor.save()
+        #ok, vamos incrementar numero de lances do lote
+        self.instance.valor_lance_mais_alto = self.instance.valor_lance_mais_alto + 1
+        self.instance.save()
 
 class saldoUpdateForm(forms.ModelForm): #Atualizar saldo
     class Meta:

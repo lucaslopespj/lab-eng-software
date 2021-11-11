@@ -8,6 +8,12 @@
     <h1> {{ lote.nome }} </h1>
     <h2> {{ lote.cliente_vendedor.username }} </h2>
     {% if lote.valor_lance_mais_alto > 0 %}
+        {% if lote.numero_de_lances > 1 %}
+            <p> Este lote recebeu {{ lote.numero_de_lances }} lances. </p>
+        {% else %}
+            <p> Este lote recebeu {{ lote.numero_de_lances }} lance. </p>
+        {% endif %}
+        <br/>
         <h2> Atual lance vencedor :</h2>
         <p> {{ lote.cliente_comprador_lance_mais_alto.username }} deu um lance de {{ lote.valor_lance_mais_alto }} </p>
         <p> Valor mínimo de incremento = {{lote.valor_minimo_incremento_por_lance}}</p>
@@ -18,7 +24,14 @@
     <h3> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</h3>
     <p> {{ lote.descricao }} </p>
     {% if user.is_authenticated %}
-            <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+            {% if user.first_name == "['cliente']" %}
+                <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+            {% endif %}
+            {% if lote.liberado_para_lances == False %}
+                {% if user.first_name == "['leiloeiro']" %}
+                    <a href="{% url 'lote_liberar' lote.pk %}">Liberar Lote para Leilão</a> <br/> <br/>
+                {% endif %}
+            {% endif %}
     {% endif %}
     {% if user == lote.cliente_vendedor %}
             <a href="{% url 'lote_cancel' lote.pk %}">Cancelar leilão</a> <br/> <br/>

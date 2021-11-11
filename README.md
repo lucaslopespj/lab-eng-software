@@ -79,13 +79,13 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 - Conferir saldo bancário
 
-#### Para usuário Leiloeiro (página exclusiva)
+#### Para usuário Leiloeiro
 
 - Gerar Relatórios
 
-> Lances abaixo do maior lance atual são rejeitados !
+- Liberar Lote para leilão
 
-***O caso de uso Ofertar Lotes de Produto está completamente implementado!***
+OBS: as cobranças são realizadas no momento da realização do lance, portanto na versão atual mesmo se o maior lance for inferior ao valor de reserva o leilão é finalizado!
 
 ### Quais testes foram implementados ?
 
@@ -108,7 +108,7 @@ O comando para executar os testes montados é:
 
 #### Selenium IDE
 
-Na aula 9, foram realizados testes para a interface com o usuário utilizando a Selenium IDE. O projeto se encontra no arquivo ***ProjetoLeilao.side***.
+Na aula 9, foram realizados testes para a interface com o usuário utilizando a **Selenium IDE** para o navegador **Google Chrome**. O projeto se encontra no arquivo ***ProjetoLeilao.side***.
 
 Os casos de teste realizados estão listados abaixo. É importante utilizar o comando
 
@@ -120,17 +120,19 @@ antes de realizar os testes para limpar todas as tabelas do banco de dados. Tamb
 
 Observação: é importante realizar os testes ***na ordem listada***, uma vez que, por exemplo, é importante ter o usuário cadastrado para fazer login.
 
-- ***1_Cadastro_ClienteTeste***: Cadastro de usuário do tipo cliente com username ClienteTeste. 
+- ***1_Cadastro_LeiloeiroTeste***: Cadastro de usuário do tipo leiloeiro com username LeiloeiroTeste.
+  
+- ***2_Cadastro_ClienteTeste1***: Cadastro de usuário do tipo cliente com username ClienteTeste1. 
 
-- ***2_Cadastro_ClienteTeste2***: Cadastro de usuário do tipo cliente com username ClienteTeste2. 
+- ***2_Cadastro_ClienteTeste2***: Cadastro de usuário do tipo cliente com username ClienteTeste2.
 
-- ***3_Cadastro_LeiloeiroTeste***: Cadastro de usuário do tipo leiloeiro com username LeiloeiroTeste.
+- ***4_Ofertar_Lote***: ClienteTeste1 oferta lote um lote de produto.
+  
+- ***5_Liberar_Lote***: LeiloeiroTeste libera lote para lances.
 
-- ***4_Ofertar_Lote***: ClienteTeste oferta lote **Caderno de 96 folhas**.
+- ***6_Realizar_Lance***: ClienteTeste2 realiza lance no lote ofertado.
 
-- ***5_Realizar_Lance***: ClienteTeste2 realiza lance no lote **Caderno de 96 folhas**.
-
-- ***6_Gerar_Relatorio***: Leiloeiro teste gera relatório contendo taxas de comissão pagas.  
+- ***7_Gerar_Relatorio***: LeiloeiroTeste teste gera relatório contendo taxas de comissão pagas.  
 
 ![TestesSelenium](TestesSelenium.png)
 
@@ -145,5 +147,3 @@ Observação: é importante realizar os testes ***na ordem listada***, uma vez q
 - [Linking user model to a custom profile model](https://prog.world/one-to-one-relationship-linking-a-user-model-to-a-custom-profile-model-in-django/)
 
 - [Making database queries in Django](https://docs.djangoproject.com/en/3.2/topics/db/queries/)
-
-- [How to output PDFs in Django](https://docs.djangoproject.com/en/3.2/howto/outputting-pdf/)

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Liberar lote
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.first_name == "['leiloeiro']" %}
+            {% if lote.liberado_para_lances == False %}
+                <h2>Liberar lote</h2>
+                <br/><br/>
+                <div class="form-group">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="btn btn-secondary">Liberar lote para leilão</button>
+                    </form>
+                </div>
+            {% else %}
+                <h2>Esse lote já foi liberado para lances!</h2>
+            {% endif %}
+        {% else %}
+            <h2>Apenas usuários leiloeiros podem liberar lotes para leilão!</h2>
+        {% endif %}
+    {% else %}
+       <h2>Apenas usuários leiloeiros podem liberar lotes para leilão!</h2>
+    {% endif %}
+{% endblock %}
