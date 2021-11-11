@@ -877,6 +877,27 @@
       ],
       "value": "LeiloeiroTeste"
     }, {
+      "id": "640cf235-3d4c-4c7b-b095-19e857025c90",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_password",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "35ab4ad0-e086-4515-83bd-12a0aeee33c6",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_password",
+      "targets": [],
+      "value": "juca2010"
+    }, {
+      "id": "bd5c13fb-eebe-42f0-889f-a4a36952f31a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "eeebbba6-adba-47ed-86df-a9f6845ffdd1",
       "comment": "",
       "command": "click",
@@ -957,45 +978,6 @@
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "6c29fb12-66c7-4b50-b748-e028c2ce3091",
-      "comment": "",
-      "command": "click",
-      "target": "id=id_password",
-      "targets": [
-        ["id=id_password", "id"],
-        ["name=password", "name"],
-        ["css=#id_password", "css:finder"],
-        ["xpath=//input[@id='id_password']", "xpath:attributes"],
-        ["xpath=//p[2]/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "5935da0c-cbd7-4bc8-a31b-f17d7cbaa787",
-      "comment": "",
-      "command": "type",
-      "target": "id=id_password",
-      "targets": [
-        ["id=id_password", "id"],
-        ["name=password", "name"],
-        ["css=#id_password", "css:finder"],
-        ["xpath=//input[@id='id_password']", "xpath:attributes"],
-        ["xpath=//p[2]/input", "xpath:position"]
-      ],
-      "value": "juca2010"
-    }, {
-      "id": "1073267e-e6e6-48e9-9222-bcce6fafb605",
-      "comment": "",
-      "command": "sendKeys",
-      "target": "id=id_password",
-      "targets": [
-        ["id=id_password", "id"],
-        ["name=password", "name"],
-        ["css=#id_password", "css:finder"],
-        ["xpath=//input[@id='id_password']", "xpath:attributes"],
-        ["xpath=//p[2]/input", "xpath:position"]
-      ],
-      "value": "${KEY_ENTER}"
     }]
   }, {
     "id": "edcf8463-641b-4f76-8973-98161e61ed7a",
