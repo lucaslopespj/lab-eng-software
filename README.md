@@ -67,8 +67,6 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 - Login e Logout de usuários
 
-- Página exclusiva para usuário Leiloeiro
-
 #### Para usuário cliente
 
 - Ofertar lote de produto (vendedor paga taxa de comissão)
@@ -81,11 +79,11 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 #### Para usuário Leiloeiro
 
-- Gerar Relatórios
+- Gerar Relatório de Taxas pagas
 
 - Liberar Lote para leilão
 
-OBS: as cobranças são realizadas no momento da realização do lance, portanto na versão atual mesmo se o maior lance for inferior ao valor de reserva o leilão é finalizado!
+- Finalizar Leilão
 
 ### Quais testes foram implementados ?
 
@@ -106,7 +104,7 @@ O comando para executar os testes montados é:
 
 ![test_models.py](TestesModels.png)
 
-#### Selenium IDE
+#### Selenium IDE (desatualizados)
 
 Na aula 9, foram realizados testes para a interface com o usuário utilizando a **Selenium IDE** para o navegador **Google Chrome**. O projeto se encontra no arquivo ***ProjetoLeilao.side***.
 
