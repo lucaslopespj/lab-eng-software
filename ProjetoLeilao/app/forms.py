@@ -57,7 +57,7 @@ class LoteFinalizarLeilaoForm(forms.ModelForm): #Hora de realizar cobranças
         utc = pytz.UTC
         tempo_atual = utc.localize(datetime.now())
         tempo_final = self.instance.data_final
-        if(tempo_final <= tempo_atual):
+        if(tempo_final > tempo_atual):
             raise forms.ValidationError("O leilão ainda vai acabar:" + tempo_final.strftime("%m/%d/%Y, %H:%M:%S"))
         if(self.instance.valor_lance_mais_alto >= self.instance.valor_reserva): #vamos realizar venda
             # valor total a ser pago = lance + taxa de comissao!!
