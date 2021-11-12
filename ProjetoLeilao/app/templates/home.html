@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Projeto Leilão
+    PCS3643 - Leilão de Livros
 {% endblock %}
 
 {% block content %}
@@ -12,16 +12,17 @@
     <li> <a href="{% url 'lote_detail' lote.pk %}">{{ lote.nome }}</a> - {{ lote.cliente_vendedor.username }}<br/>
     <p> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</p>
     {{ lote.descricao|slice:"200"}}<br/>
-    {% if user.is_authenticated %}
-        {% if user.first_name == "['cliente']" %}
-            <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
-        {% endif %}
 
-        {% if lote.liberado_para_lances == False %}
-                <strong>Esse lote ainda não foi liberado para lances!!</strong>
-        {% endif %}
+    {% if lote.liberado_para_lances == False %}
+        <strong>Esse lote ainda não foi liberado para lances!!</strong>
     {% else %}
-        <it>Para fazer seu lance, cadastre-se ou faça login!</it>
+        {% if user.is_authenticated %}
+            {% if user.first_name == "['cliente']" %}
+                <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+            {% endif %}
+        {% else %}
+            <it>Para fazer seu lance, cadastre-se ou faça login!</it>
+        {% endif %}
     {% endif %}
     </li> <br/><br/>
 {% endfor %}

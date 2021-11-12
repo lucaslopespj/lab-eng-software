@@ -9,14 +9,15 @@ from . import models
 class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
     class Meta:
         model = models.Lote
-        fields = ('nome', 'descricao', 'estado_conservacao', 'valor_reserva', 'valor_minimo_lance', 'valor_minimo_incremento_por_lance', 'cliente_vendedor', 'data_final')
+        fields = ('nome', 'descricao', 'estado_conservacao', 'autor', 'editora', 'numero_de_paginas', 'valor_reserva', 'cliente_vendedor', 'data_final')
         widgets = { #elementos HTML correspondentes aos campos
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
             'estado_conservacao': forms.Select(attrs={'class': 'form-control'}),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
+            'editora': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_de_paginas': forms.TextInput(attrs={'class': 'form-control'}),
             'valor_reserva': forms.NumberInput(attrs={'class': 'form-control'}),
-            'valor_minimo_lance': forms.NumberInput(attrs={'class': 'form-control'}),
-            'valor_minimo_incremento_por_lance': forms.NumberInput(attrs={'class': 'form-control'}),
             'cliente_vendedor': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'cliente_vendedor_field', 'type': 'hidden'}),
             'data_final': forms.DateTimeInput(attrs={'class': 'form-control'}),
         }
@@ -43,20 +44,99 @@ class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente = self.cleaned_data['cliente_vendedor'])
         if(saldo_vendedor.valor < self.instance.taxa_comissao):
             raise forms.ValidationError('Seu saldo de ' + str(saldo_vendedor.valor) + ' não é suficiente para pagar a taxa de comissão ' + str(self.instance.taxa_comissao))
-        #ok, vamos descontar taxa de comissao do saldo
-        saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
-        saldo_vendedor.save()
-        #ok, vamos adicionar pagamento ao leilao
-        pagamento = models.Pagamento(valor = self.instance.taxa_comissao)
-        pagamento.save()
+
+class LoteFinalizarLeilaoForm(forms.ModelForm): #Hora de realizar cobranças
+    class Meta:
+        model = models.Lote
+        fields = ('leilao_finalizado',)
+        widgets = {
+            'leilao_finalizado': forms.CheckboxInput(),
+        }
+    def clean(self):
+        #PRIMEIRA VALIDACAO: Data final precisa estar no passado
+        utc = pytz.UTC
+        tempo_atual = utc.localize(datetime.now())
+        tempo_final = self.instance.data_final
+        if(tempo_final <= tempo_atual):
+            raise forms.ValidationError("O leilão ainda vai acabar:" + tempo_final.strftime("%m/%d/%Y, %H:%M:%S"))
+        if(self.instance.valor_lance_mais_alto >= self.instance.valor_reserva): #vamos realizar venda
+            # valor total a ser pago = lance + taxa de comissao!!
+            valor_lance = self.instance.valor_lance_mais_alto
+            valor_comissao = 0
+            if (valor_lance <= 1000):
+                valor_comissao = 3 * float(valor_lance) / 100.00  # taxa de 3%
+            elif (valor_lance <= 10000):
+                valor_comissao = 4 * float(valor_lance) / 50.00  # taxa de 4%
+            elif (valor_lance <= 50000):
+                valor_comissao = 5 * float(valor_lance) / 100.00  # taxa de 5%
+            elif (valor_lance <= 100000):
+                valor_comissao = 6 * float(valor_lance) / 100.00  # taxa de 6%
+            else:
+                valor_comissao = 7 * float(valor_lance) / 100.00  # taxa de 7%
+            valor_total = valor_lance + decimal.Decimal(valor_comissao)
+            saldo_comprador = models.Saldo.objects.all().get(
+                username_cliente=self.instance.cliente_comprador_lance_mais_alto.username)
+            # ok, vamos descontar valor total a ser pago do saldo
+            saldo_comprador.valor = saldo_comprador.valor - decimal.Decimal(valor_total)
+            saldo_comprador.save()
+            # ok, vamos adicionar pagamento ao leilao
+            pagamento = models.Pagamento(valor=valor_comissao)
+            pagamento.save()
+            # ok, vamos adicionar saldo ao vendedor
+            saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor.username)
+            saldo_vendedor.valor = saldo_vendedor.valor + valor_lance
+            saldo_vendedor.save()
+        self.instance.save()
 
 class LoteLiberarForm(forms.ModelForm): #Leiloeiro libera lote para lances
+    class Meta:
+        model = models.Lote
+        fields = ('liberado_para_lances', 'valor_minimo_lance', 'valor_minimo_incremento_por_lance')
+        widgets = {
+            'liberado_para_lances': forms.CheckboxInput(),
+            'valor_minimo_lance': forms.NumberInput(attrs={'class': 'form-control'}),
+            'valor_minimo_incremento_por_lance': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+    def clean(self):
+        #PRIMEIRA VALIDACAO: Precisa ter liberado lote
+        lote_liberado = self.cleaned_data['liberado_para_lances']
+        if(lote_liberado == False):
+            raise forms.ValidationError('Para enviar esse formulário, você precisa liberar o lote para leilão')
+        saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor)
+        # ok, vamos descontar taxa de comissao do saldo
+        saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
+        saldo_vendedor.save()
+        # ok, vamos adicionar pagamento ao leilao
+        pagamento = models.Pagamento(valor=self.instance.taxa_comissao, tipo_de_pagamento='COMISSÃO NOVO LOTE')
+        pagamento.save()
+
+class LoteEditarForm(forms.ModelForm): #Editar dados do lote
 
     class Meta:
         model = models.Lote
-        fields = ('liberado_para_lances',)
-        widgets = {
-            'liberado_para_lances': forms.CheckboxInput(),
+        fields = ('nome', 'descricao', 'estado_conservacao', 'autor', 'editora', 'numero_de_paginas')
+        widgets = {  # elementos HTML correspondentes aos campos
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'descricao': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado_conservacao': forms.Select(attrs={'class': 'form-control'}),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
+            'editora': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_de_paginas': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class LoteEditarAdmForm(forms.ModelForm): #Editar dados do lote (Leiloeiro)
+
+    class Meta:
+        model = models.Lote
+        fields = ('nome', 'descricao', 'estado_conservacao', 'autor', 'editora', 'numero_de_paginas', 'valor_minimo_incremento_por_lance')
+        widgets = {  # elementos HTML correspondentes aos campos
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'descricao': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado_conservacao': forms.Select(attrs={'class': 'form-control'}),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
+            'editora': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_de_paginas': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_minimo_incremento_por_lance': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 class LoteUpdateForm(forms.ModelForm): #Realizar Lance
@@ -110,40 +190,8 @@ class LoteUpdateForm(forms.ModelForm): #Realizar Lance
         saldo_comprador = models.Saldo.objects.all().get(username_cliente = self.cleaned_data['cliente_comprador_username'])
         if(saldo_comprador.valor < valor_total):
             raise forms.ValidationError('Seu saldo de ' + str(saldo_comprador.valor) + ' não é suficiente para pagar o valor total ' + str(valor_total))
-        #ok, vamos descontar valor total a ser pago do saldo
-        saldo_comprador.valor = saldo_comprador.valor - decimal.Decimal(valor_total)
-        saldo_comprador.save()
-        #ok, vamos reembolsar comprador anterior!!
-        valor_antigo_total = 0
-        valor_antigo_lance = 0
-        if(self.instance.cliente_comprador_lance_mais_alto != None):
-            saldo_antigo_comprador = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_comprador_lance_mais_alto.username)
-            valor_antigo_lance = self.instance.valor_lance_mais_alto
-            valor_antigo_comissao = 0
-            if (valor_antigo_lance <= 1000):
-                valor_antigo_comissao = 3 * float(valor_antigo_lance) / 100.00  # taxa de 3%
-            elif (valor_antigo_lance <= 10000):
-                valor_antigo_comissao = 4 * float(valor_antigo_lance) / 50.00  # taxa de 4%
-            elif (valor_antigo_lance <= 50000):
-                valor_antigo_comissao = 5 * float(valor_antigo_lance) / 100.00  # taxa de 5%
-            elif (valor_antigo_lance <= 100000):
-                valor_antigo_comissao = 6 * float(valor_antigo_lance) / 100.00  # taxa de 6%
-            else:
-                valor_antigo_comissao = 7 * float(valor_antigo_lance) / 100.00  # taxa de 7%
-            valor_antigo_total = valor_antigo_lance + decimal.Decimal(valor_antigo_comissao)
-            saldo_antigo_comprador.valor = saldo_antigo_comprador.valor + decimal.Decimal(valor_antigo_total)
-            saldo_antigo_comprador.save()
-            pagamento = models.Pagamento(valor = decimal.Decimal(-valor_antigo_comissao))
-            pagamento.save()
-        #ok, vamos adicionar pagamento ao leilao
-        pagamento = models.Pagamento(valor=valor_comissao)
-        pagamento.save()
-        #ok, vamos adicionar saldo ao vendedor
-        saldo_vendedor = models.Saldo.objects.all().get(username_cliente = self.instance.cliente_vendedor.username)
-        saldo_vendedor.valor = saldo_vendedor.valor + valor_lance - valor_antigo_lance
-        saldo_vendedor.save()
         #ok, vamos incrementar numero de lances do lote
-        self.instance.valor_lance_mais_alto = self.instance.valor_lance_mais_alto + 1
+        self.instance.numero_de_lances = self.instance.numero_de_lances + 1
         self.instance.save()
 
 class saldoUpdateForm(forms.ModelForm): #Atualizar saldo

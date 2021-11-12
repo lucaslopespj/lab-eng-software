@@ -6,21 +6,21 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        {% if user == lote.cliente_vendedor %}
+        {% if user.first_name == "['leiloeiro']" %}
             <h2>Cancelar leilão de lote</h2>
             <br/><br/>
             <div class="form-group">
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <strong>Tem certeza ? A taxa de comissão paga não será reembolsada</strong><br/>
+                    <strong>Tem certeza que quer cancelar esse lote ?</strong><br/>
                     <button class="btn btn-secondary">Confirmar e cancelar</button>
                 </form>
             </div>
         {% else %}
-            <h2>Apenas o vendedor que ofertou o lote pode cancelar.</h2>
+            <h2>Apenas usuário Leiloeiro pode cancelar leilão!</h2>
         {% endif %}
     {% else %}
-       <h2>Apenas o vendedor que ofertou o lote pode cancelar.</h2>
+       <h2>Essa área é restrita, por favor cadastre-se ou faça login.</h2>
     {% endif %}
 {% endblock %}

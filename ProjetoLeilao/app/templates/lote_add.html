@@ -9,6 +9,46 @@
         {% if user.first_name == "['cliente']" %}
             <h2>Ofertar lote de produtos</h2>
             <br/><br/>
+            <p><b>AVISO:</b> Caso seu lote seja aprovado, uma taxa de comissão será cobrada conforme tipo do lote.</p>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Tipo do Lote</th>
+                        <th scope="col">Valor do Lote</th>
+                        <th scope="col">Taxa de comissão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><= 1000 reais</td>
+                        <td>1%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td><= 10000 reais</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td><= 50000 reais</td>
+                        <td>3%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td><= 100000 reais</td>
+                        <td>4%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>> 100000 reais</td>
+                        <td>5%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><i>A taxa de comissão será aplicada sobre o valor de reserva.</i></p>
+            <br/><br/>
             <div class="form-group">
                 <form method="POST">
                     {% csrf_token %}

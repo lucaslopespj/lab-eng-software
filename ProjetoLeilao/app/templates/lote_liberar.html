@@ -10,6 +10,8 @@
             {% if lote.liberado_para_lances == False %}
                 <h2>Liberar lote</h2>
                 <br/><br/>
+                <p><b>AVISO:</b> O valor de reserva do vendedor é <b>{{lote.valor_reserva}}</b></p>
+                <br/><br/>
                 <div class="form-group">
                     <form method="POST">
                         {% csrf_token %}

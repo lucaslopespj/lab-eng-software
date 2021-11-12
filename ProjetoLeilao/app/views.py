@@ -35,6 +35,21 @@ class LoteLanceView(UpdateView):
     form_class = forms.LoteUpdateForm
     template_name = 'lote_lance.html'
 
+class LoteEditarView(UpdateView):
+    model = models.Lote
+    form_class = forms.LoteEditarForm
+    template_name = 'lote_editar.html'
+
+class LoteEditarAdmView(UpdateView):
+    model = models.Lote
+    form_class = forms.LoteEditarAdmForm
+    template_name = 'lote_editar_leiloeiro.html'
+
+class LoteFinalizarLeilaoView(UpdateView):
+    model = models.Lote
+    form_class = forms.LoteFinalizarLeilaoForm
+    template_name = 'lote_finalizar.html'
+
 class LoteCancelView(DeleteView):
     model = models.Lote
     template_name = 'lote_cancel.html'
