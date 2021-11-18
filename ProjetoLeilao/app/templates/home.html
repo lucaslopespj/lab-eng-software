@@ -11,7 +11,7 @@
 {% for lote in object_list %}
     <li> <a href="{% url 'lote_detail' lote.pk %}">{{ lote.nome }}</a> - {{ lote.cliente_vendedor.username }}<br/>
     <p> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</p>
-    {{ lote.descricao|slice:"200"}}<br/>
+    {{ lote.descricao }}<br/>
 
     {% if lote.liberado_para_lances == False %}
         <strong>Esse lote ainda não foi liberado para lances!!</strong>

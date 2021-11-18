@@ -79,7 +79,9 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 
 #### Para usuário Leiloeiro
 
-- Gerar Relatório de Taxas pagas
+- Gerar Relatório de Faturamento
+
+- Gerar Relatório de Desempenho
 
 - Liberar Lote para leilão
 

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Relatório de desempenho
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.first_name == "['leiloeiro']" %}
+        {% if not data_inicio_relatorio %}
+            <h2>Acesse sua área exclusiva para gerar relatórios</h2>
+        {% else %}
+            <h2>Lotes de Produtos Vendidos no Período: {{data_inicio_relatorio}} - {{data_final_relatorio}}</h2>
+            <ol>
+                {% for pagamento in object_list %}
+                    {% if pagamento.data >= data_inicio_relatorio and pagamento.data <= data_final_relatorio %}
+                        {% if pagamento.tipo_de_pagamento == "COMISSÃO LANCE" %}
+                            <li>
+                                <div class="container-fluid">
+                                    <h4>Lote: {{pagamento.lote.nome}}</h4>
+                                    <strong>Data da venda: {{pagamento.data}}</strong><br/>
+                                </div>
+                                <br/>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        {% endif %}
+    {% else %}
+        <h2>Apenas usuários leiloeiros podem emitir relatórios!</h2>
+    {% endif %}
+{% else %}
+    <h2>Apenas usuários leiloeiros podem emitir relatórios!</h2>
+{% endif %}
+{% endblock %}

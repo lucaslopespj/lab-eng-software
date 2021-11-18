@@ -57,7 +57,9 @@
                     <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
                 {% endif %}
                 {% if user.first_name == "['leiloeiro']" %}
-                    <a href="{% url 'lote_finalizar' lote.pk %}">Finalizar Leilão</a> <br/> <br/>
+                    {% if lote.leilao_finalizado == False %}
+                        <a href="{% url 'lote_finalizar' lote.pk %}">Finalizar Leilão</a> <br/> <br/>
+                    {% endif %}
                 {% endif %}
             {% endif %}
             {% if user.first_name == "['leiloeiro']" %}

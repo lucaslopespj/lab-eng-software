@@ -43,7 +43,8 @@ class Saldo(models.Model): #Saldo disponivel para cliente(comprador/vendedor)
     def __str__(self):
         return str(self.cliente)
 
-class Pagamento(models.Model): #Comissoes pagas ao leilao, usadas para gerar relatorios
+class Pagamento(models.Model): #Comissoes pagas ao leilao, usadas para gerar Relatorio de Faturamento
+    lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True)
     valor = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     data = models.DateTimeField(auto_now_add=True)
     tipo_de_pagamento = models.TextField(

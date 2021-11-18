@@ -55,14 +55,31 @@ class LoteCancelView(DeleteView):
     template_name = 'lote_cancel.html'
     success_url = '/'
 
-class AreaExclusivaView(FormView): #Formulario para Gerar Relatório
-    form_class = forms.gerarRelatorio
+class AreaExclusivaView(TemplateView):
     template_name = 'area_exclusiva.html'
-    success_url = 'relatorio'
 
-class RelatorioView(ListView): #View para exibir relatorio
+class GerarRelatorioFaturamentoView(FormView): #Formulario para Gerar Relatório de Faturamento
+    form_class = forms.gerarRelatorioFaturamento
+    template_name = 'gerar_relatorio_faturamento.html'
+    success_url = 'visualizar'
+
+class GerarRelatorioDesempenhoView(FormView): #Formulario para Gerar Relatorio de Desempenho
+    form_class = forms.gerarRelatorioDesempenho
+    template_name = 'gerar_relatorio_desempenho.html'
+    success_url = 'visualizar'
+
+class RelatorioFaturamentoView(ListView): #View para exibir Relatorio de Faturamento
     model = models.Pagamento
-    template_name = 'relatorio.html'
+    template_name = 'relatorio_faturamento.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data_inicio_relatorio'] = forms.data_inicio_relatorio
+        context['data_final_relatorio'] = forms.data_final_relatorio
+        return context
+
+class RelatorioDesempenhoView(ListView): #View para exibir Relatorio de Desempenho
+    model = models.Pagamento
+    template_name = 'relatorio_desempenho.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data_inicio_relatorio'] = forms.data_inicio_relatorio

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Relatório
+    Relatório de Faturamento
 {% endblock %}
 
 {% block content %}
@@ -15,8 +15,11 @@
                 {% for pagamento in object_list %}
                     {% if pagamento.data >= data_inicio_relatorio and pagamento.data <= data_final_relatorio %}
                         <li>
-                            {{pagamento.data}} <br/>
+                            <p>Lote: {{pagamento.lote.nome}} <br>
+                            Tipo de pagamento: {{pagamento.tipo_de_pagamento}} <br>
+                            Data: {{pagamento.data}} </p>
                             <strong>valor = {{ pagamento.valor }}</strong>
+                            <br/><br/>
                         </li>
                     {% endif %}
                 {% endfor %}

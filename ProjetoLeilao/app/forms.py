@@ -80,7 +80,7 @@ class LoteFinalizarLeilaoForm(forms.ModelForm): #Hora de realizar cobranças
             saldo_comprador.valor = saldo_comprador.valor - decimal.Decimal(valor_total)
             saldo_comprador.save()
             # ok, vamos adicionar pagamento ao leilao
-            pagamento = models.Pagamento(valor=valor_comissao)
+            pagamento = models.Pagamento(lote=self.instance, valor=valor_comissao, tipo_de_pagamento='COMISSÃO LANCE')
             pagamento.save()
             # ok, vamos adicionar saldo ao vendedor
             saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor.username)
@@ -107,7 +107,7 @@ class LoteLiberarForm(forms.ModelForm): #Leiloeiro libera lote para lances
         saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
         saldo_vendedor.save()
         # ok, vamos adicionar pagamento ao leilao
-        pagamento = models.Pagamento(valor=self.instance.taxa_comissao, tipo_de_pagamento='COMISSÃO NOVO LOTE')
+        pagamento = models.Pagamento(lote=self.instance, valor=self.instance.taxa_comissao, tipo_de_pagamento='COMISSÃO NOVO LOTE')
         pagamento.save()
 
 class LoteEditarForm(forms.ModelForm): #Editar dados do lote
@@ -213,7 +213,7 @@ class saldoUpdateForm(forms.ModelForm): #Atualizar saldo
 data_inicio_relatorio = None
 data_final_relatorio = None
 
-class gerarRelatorio(forms.Form):
+class gerarRelatorioFaturamento(forms.Form):
     # filtrar pagamentos realizados entre certas datas
     data_inicio = forms.DateTimeField(widget = forms.DateTimeInput())
     data_final = forms.DateTimeField(widget = forms.DateTimeInput())
@@ -221,6 +221,20 @@ class gerarRelatorio(forms.Form):
     def clean(self):
         # PRIMEIRA VALIDACAO: data inicio precisa ser menor que data final
         if(self.cleaned_data['data_inicio'] > self.cleaned_data['data_final']):
+            raise forms.ValidationError('Datas inseridas são inválidas')
+        global data_inicio_relatorio
+        data_inicio_relatorio = self.cleaned_data['data_inicio']
+        global data_final_relatorio
+        data_final_relatorio = self.cleaned_data['data_final']
+
+class gerarRelatorioDesempenho(forms.Form):
+    # estatisticas de ofertas convertidas em vendas
+    data_inicio = forms.DateTimeField(widget=forms.DateTimeInput())
+    data_final = forms.DateTimeField(widget=forms.DateTimeInput())
+
+    def clean(self):
+        # PRIMEIRA VALIDACAO: data inicio precisa ser menor que data final
+        if (self.cleaned_data['data_inicio'] > self.cleaned_data['data_final']):
             raise forms.ValidationError('Datas inseridas são inválidas')
         global data_inicio_relatorio
         data_inicio_relatorio = self.cleaned_data['data_inicio']
