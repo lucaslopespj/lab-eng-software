@@ -37,6 +37,7 @@ class LoteCreateForm(forms.ModelForm): #Ofertar lote de produtos
         #PRIMEIRA VALIDACAO: Leilao precisa acabar no futuro
         utc = pytz.UTC
         tempo_atual = utc.localize(datetime.now())
+        self.instance.data_inicio = tempo_atual
         tempo_final = self.cleaned_data['data_final']
         if (tempo_final < tempo_atual):
             raise forms.ValidationError('O leilão não pode acabar antes do momento atual!')
@@ -80,7 +81,7 @@ class LoteFinalizarLeilaoForm(forms.ModelForm): #Hora de realizar cobranças
             saldo_comprador.valor = saldo_comprador.valor - decimal.Decimal(valor_total)
             saldo_comprador.save()
             # ok, vamos adicionar pagamento ao leilao
-            pagamento = models.Pagamento(lote=self.instance, valor=valor_comissao, tipo_de_pagamento='COMISSÃO LANCE')
+            pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=valor_comissao, tipo_de_pagamento='COMISSÃO LANCE')
             pagamento.save()
             # ok, vamos adicionar saldo ao vendedor
             saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor.username)
@@ -107,7 +108,9 @@ class LoteLiberarForm(forms.ModelForm): #Leiloeiro libera lote para lances
         saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
         saldo_vendedor.save()
         # ok, vamos adicionar pagamento ao leilao
-        pagamento = models.Pagamento(lote=self.instance, valor=self.instance.taxa_comissao, tipo_de_pagamento='COMISSÃO NOVO LOTE')
+        utc = pytz.UTC
+        tempo_atual = utc.localize(datetime.now())
+        pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=self.instance.taxa_comissao, tipo_de_pagamento='COMISSÃO NOVO LOTE')
         pagamento.save()
 
 class LoteEditarForm(forms.ModelForm): #Editar dados do lote

@@ -21,7 +21,7 @@ class Lote(models.Model):
     valor_minimo_lance = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     valor_minimo_incremento_por_lance = models.DecimalField(max_digits=11, decimal_places=2, default=0.01)
     valor_reserva = models.DecimalField(max_digits=11, decimal_places=2)
-    data_inicio = models.DateTimeField(auto_now_add=True)
+    data_inicio = models.DateTimeField()
     data_final = models.DateTimeField()
     valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
@@ -46,7 +46,7 @@ class Saldo(models.Model): #Saldo disponivel para cliente(comprador/vendedor)
 class Pagamento(models.Model): #Comissoes pagas ao leilao, usadas para gerar Relatorio de Faturamento
     lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True)
     valor = models.DecimalField(max_digits=11, decimal_places=2, default=0)
-    data = models.DateTimeField(auto_now_add=True)
+    data = models.DateTimeField()
     tipo_de_pagamento = models.TextField(
         choices=[('COMISSÃO NOVO LOTE', 'COMISSÃO NOVO LOTE'),
                  ('COMISSÃO LANCE', 'COMISSÃO LANCE')],
