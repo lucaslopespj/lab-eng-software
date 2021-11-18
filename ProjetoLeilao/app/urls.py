@@ -16,6 +16,6 @@ urlpatterns = [
     path('exclusiva/', views.AreaExclusivaView.as_view(), name='area_exclusiva'),
     path('exclusiva/faturamento/gerar/', views.GerarRelatorioFaturamentoView.as_view(), name='gerar_relatorio_faturamento'),
     path('exclusiva/faturamento/gerar/visualizar/', views.RelatorioFaturamentoView.as_view(), name='relatorio_faturamento'),
-    path('exclusiva/desempenho/gerar', views.GerarRelatorioDesempenhoView.as_view(), name='gerar_relatorio_desempenho'),
+    path('exclusiva/desempenho/gerar/', views.GerarRelatorioDesempenhoView.as_view(), name='gerar_relatorio_desempenho'),
     path('exclusiva/desempenho/gerar/visualizar', views.RelatorioDesempenhoView.as_view(), name='relatorio_desempenho'),
 ]
