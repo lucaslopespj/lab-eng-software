@@ -59,6 +59,8 @@ Agora basta executar o servidor
 
 Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do projeto, adicionamos uma pasta **Screenshots** contendo capturas de tela da versão atual do projeto em funcionamento.
 
+![Homepage](Screenshots/homepage.png)
+
 ## O que tem na versão atual do projeto ?
 
 ### Funcionalidades
