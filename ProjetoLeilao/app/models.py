@@ -29,6 +29,7 @@ class Lote(models.Model):
     numero_de_lances = models.DecimalField(max_digits=11, decimal_places=0, default=0)
     liberado_para_lances = models.BooleanField(default=False)
     leilao_finalizado = models.BooleanField(default=False)
+    lote_foi_vendido = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nome + " | " + str(self.cliente_vendedor)

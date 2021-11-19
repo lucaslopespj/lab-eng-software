@@ -75,6 +75,9 @@ class RelatorioFaturamentoView(ListView): #View para exibir Relatorio de Faturam
         context = super().get_context_data(**kwargs)
         context['data_inicio_relatorio'] = forms.data_inicio_relatorio
         context['data_final_relatorio'] = forms.data_final_relatorio
+        context['faturamento_total'] = forms.faturamento_total
+        context['faturamento_comissao_vendedores'] = forms.faturamento_comissao_vendedores
+        context['faturamento_comissao_compradores'] = forms.faturamento_comissao_compradores
         return context
 
 class RelatorioDesempenhoView(ListView): #View para exibir Relatorio de Desempenho
@@ -84,6 +87,11 @@ class RelatorioDesempenhoView(ListView): #View para exibir Relatorio de Desempen
         context = super().get_context_data(**kwargs)
         context['data_inicio_relatorio'] = forms.data_inicio_relatorio
         context['data_final_relatorio'] = forms.data_final_relatorio
+        context['numero_lotes_vendidos'] = forms.numero_lotes_vendidos
+        context['lotes_vendidos'] = forms.lotes_vendidos
+        context['numero_lotes_nao_vendidos'] = forms.numero_lotes_nao_vendidos
+        context['lotes_nao_vendidos'] = forms.lotes_nao_vendidos
+        context['total_de_leiloes_finalizados'] = forms.total_de_leiloes_finalizados
         return context
 
 class SaldoUpdateView(FormView):

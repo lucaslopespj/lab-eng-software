@@ -10,7 +10,28 @@
         {% if not data_inicio_relatorio %}
             <h2>Acesse sua área exclusiva para gerar relatórios</h2>
         {% else %}
-            <h2>Pagamentos do periodo: {{data_inicio_relatorio}} - {{data_final_relatorio}}</h2>
+            <h2>Relatorio de Faturamento</h2>
+            <h3>Periodo: {{data_inicio_relatorio}} até {{data_final_relatorio}}</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Faturamento total</th>
+                        <th scope="col">{{faturamento_total}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Comissões de Vendedores</th>
+                        <td>{{faturamento_comissao_vendedores}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Comissões de Compradores</th>
+                        <td>{{faturamento_comissao_compradores}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Lista de Pagamentos do Período</h2>
             <ul>
                 {% for pagamento in object_list %}
                     {% if pagamento.data >= data_inicio_relatorio and pagamento.data <= data_final_relatorio %}
