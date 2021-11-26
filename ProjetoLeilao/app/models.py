@@ -22,7 +22,7 @@ class Lote(models.Model):
     valor_minimo_incremento_por_lance = models.DecimalField(max_digits=11, decimal_places=2, default=0.01)
     valor_reserva = models.DecimalField(max_digits=11, decimal_places=2)
     data_inicio = models.DateTimeField()
-    data_final = models.DateTimeField()
+    data_final = models.DateTimeField(null = True)
     valor_lance_mais_alto = models.DecimalField(max_digits=11, decimal_places=2, default=0)
     cliente_comprador_lance_mais_alto = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cliente_vendedor')
     taxa_comissao = models.DecimalField(max_digits=11, decimal_places=2, default=0)

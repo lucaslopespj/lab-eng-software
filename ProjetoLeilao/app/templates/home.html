@@ -10,7 +10,9 @@
 <ul>
 {% for lote in object_list %}
     <li> <a href="{% url 'lote_detail' lote.pk %}">{{ lote.nome }}</a> - {{ lote.cliente_vendedor.username }}<br/>
-    <p> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</p>
+    {% if lote.liberado_para_lances == True %}
+        <p> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</p>
+    {% endif %}
     {{ lote.descricao }}<br/>
 
     {% if lote.liberado_para_lances == False %}
@@ -18,10 +20,12 @@
     {% else %}
         {% if user.is_authenticated %}
             {% if user.first_name == "['cliente']" %}
-                <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+                {% if lote.leilao_finalizado == False %}
+                    <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+                {% endif %}
             {% endif %}
         {% else %}
-            <it>Para fazer seu lance, cadastre-se ou faça login!</it>
+            <strong>Cadastre-se para participar dos nossos leilões!</strong>
         {% endif %}
     {% endif %}
     </li> <br/><br/>

@@ -11,7 +11,7 @@ class LoteCreateForm(forms.ModelForm):  # Ofertar lote de produtos
     class Meta:
         model = models.Lote
         fields = ('nome', 'descricao', 'estado_conservacao', 'autor', 'editora', 'numero_de_paginas', 'valor_reserva',
-                  'cliente_vendedor', 'data_final')
+                  'cliente_vendedor')
         widgets = {  # elementos HTML correspondentes aos campos
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
@@ -22,7 +22,6 @@ class LoteCreateForm(forms.ModelForm):  # Ofertar lote de produtos
             'valor_reserva': forms.NumberInput(attrs={'class': 'form-control'}),
             'cliente_vendedor': forms.TextInput(
                 attrs={'class': 'form-control', 'value': '', 'id': 'cliente_vendedor_field', 'type': 'hidden'}),
-            'data_final': forms.DateTimeInput(attrs={'class': 'form-control'}),
         }
 
     def clean(self):
@@ -38,19 +37,60 @@ class LoteCreateForm(forms.ModelForm):  # Ofertar lote de produtos
             self.instance.taxa_comissao = 4 * float(valor_base) / 100.00  # taxa de 4%
         else:
             self.instance.taxa_comissao = 5 * float(valor_base) / 100.00  # taxa de 5%
-        # PRIMEIRA VALIDACAO: Leilao precisa acabar no futuro
         utc = pytz.UTC
         tempo_atual = utc.localize(datetime.now())
         self.instance.data_inicio = tempo_atual
-        tempo_final = self.cleaned_data['data_final']
-        if (tempo_final < tempo_atual):
-            raise forms.ValidationError('O leilão não pode acabar antes do momento atual!')
-        # SEGUNDA VALIDACAO: Vendedor tem saldo para pagar taxa de comissao
+        # PRIMEIRA VALIDACAO: Vendedor tem saldo para pagar taxa de comissao
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.cleaned_data['cliente_vendedor'])
         if (saldo_vendedor.valor < self.instance.taxa_comissao):
             raise forms.ValidationError(
                 'Seu saldo de ' + str(saldo_vendedor.valor) + ' não é suficiente para pagar a taxa de comissão ' + str(
                     self.instance.taxa_comissao))
+
+
+class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
+
+    liberado = forms.BooleanField(required=True)
+
+    class Meta:
+        model = models.Lote
+        fields = ('valor_minimo_lance', 'valor_minimo_incremento_por_lance',  'data_final')
+        widgets = {
+            'liberado': forms.CheckboxInput(),
+            'valor_minimo_lance': forms.NumberInput(attrs={'class': 'form-control'}),
+            'valor_minimo_incremento_por_lance': forms.NumberInput(attrs={'class': 'form-control'}),
+            'data_final': forms.DateTimeInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        # PRIMEIRA VALIDACAO: Precisa ter liberado lote
+        lote_liberado = self.cleaned_data['liberado']
+        if (lote_liberado == False):
+            raise forms.ValidationError('Para enviar esse formulário, você precisa liberar o lote para leilão')
+        saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor)
+        # SEGUNDA VALIDACAO: Leilao precisa acabar no futuro
+        utc = pytz.UTC
+        tempo_atual = utc.localize(datetime.now())
+        self.instance.data_inicio = tempo_atual
+        tempo_final = self.cleaned_data['data_final']
+        if tempo_final < tempo_atual:
+            raise forms.ValidationError('O leilão não pode acabar antes do momento atual!')
+        # TERCEIRA VALIDACAO: Valor de Reserva é maior ou igual ao valor mínimo do lance
+        valor_minimo_do_lance = self.cleaned_data['valor_minimo_lance']
+        valor_de_reserva = self.instance.valor_reserva
+        if valor_minimo_do_lance > valor_de_reserva:
+            raise forms.ValidationError('O valor de reserva é maior ou igual ao valor minimo do lance')
+        # ok, vamos liberar lote para leilão
+        self.instance.liberado_para_lances = self.cleaned_data['liberado']
+        # ok, vamos descontar taxa de comissao do saldo
+        saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
+        saldo_vendedor.save()
+        # ok, vamos adicionar pagamento ao leilao
+        utc = pytz.UTC
+        tempo_atual = utc.localize(datetime.now())
+        pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=self.instance.taxa_comissao,
+                                     tipo_de_pagamento='COMISSÃO NOVO LOTE')
+        pagamento.save()
 
 
 class LoteFinalizarLeilaoForm(forms.ModelForm):  # Hora de realizar cobranças
@@ -98,33 +138,6 @@ class LoteFinalizarLeilaoForm(forms.ModelForm):  # Hora de realizar cobranças
             saldo_vendedor.valor = saldo_vendedor.valor + valor_lance
             saldo_vendedor.save()
         self.instance.save()
-
-
-class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
-    class Meta:
-        model = models.Lote
-        fields = ('liberado_para_lances', 'valor_minimo_lance', 'valor_minimo_incremento_por_lance')
-        widgets = {
-            'liberado_para_lances': forms.CheckboxInput(),
-            'valor_minimo_lance': forms.NumberInput(attrs={'class': 'form-control'}),
-            'valor_minimo_incremento_por_lance': forms.NumberInput(attrs={'class': 'form-control'}),
-        }
-
-    def clean(self):
-        # PRIMEIRA VALIDACAO: Precisa ter liberado lote
-        lote_liberado = self.cleaned_data['liberado_para_lances']
-        if (lote_liberado == False):
-            raise forms.ValidationError('Para enviar esse formulário, você precisa liberar o lote para leilão')
-        saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor)
-        # ok, vamos descontar taxa de comissao do saldo
-        saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
-        saldo_vendedor.save()
-        # ok, vamos adicionar pagamento ao leilao
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
-        pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=self.instance.taxa_comissao,
-                                     tipo_de_pagamento='COMISSÃO NOVO LOTE')
-        pagamento.save()
 
 
 class LoteEditarForm(forms.ModelForm):  # Editar dados do lote
