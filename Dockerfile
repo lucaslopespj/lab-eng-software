@@ -18,6 +18,7 @@ RUN pip install --user pipenv
 # copy whole project to your docker home directory.
 COPY . $DockerHOME  
 # run this command to install all dependencies  
+RUN pipenv shell
 RUN pipenv install -r requirements.txt  
 # port where the Django app runs  
 EXPOSE 8000  
