@@ -14,8 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1  
 # install dependencies  
 RUN pip install --upgrade pip  
-RUN pip install --user pipx
-RUN pipx install pipenv
+RUN pip install --user pipenv
 # copy whole project to your docker home directory.
 COPY . $DockerHOME  
 # run this command to install all dependencies  
