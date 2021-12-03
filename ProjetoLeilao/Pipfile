@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-pymysql = "*"
+django = "==3.2.8"
+pymysql = "==1.0.2"
 python-dotenv = "*"
 django-bootstrap4 = "*"
-selenium = "*"
+selenium = "==4.0.0"
 
 [dev-packages]
 

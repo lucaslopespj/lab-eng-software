@@ -35,7 +35,7 @@ class Lote(models.Model):
         return self.nome + " | " + str(self.cliente_vendedor)
 
     def get_absolute_url(self):
-        return reverse('lote_detail', args=(str(self.id)))
+        return '/lote/%i/' % self.id
 
 class Saldo(models.Model): #Saldo disponivel para cliente(comprador/vendedor)
     username_cliente = models.CharField(max_length=150)
