@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Realizar lance
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.first_name == "['cliente']" %}
+            {% if lote.liberado_para_lances == True %}
+                <h2>Realizar lance</h2>
+                <br/><br/>
+                <h3><b>AVISO:</b> Caso seu lance seja vencedor, uma taxa de comissão será cobrada posteriormente conforme tipo do lance.</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tipo do Lance</th>
+                            <th scope="col">Valor do Lance</th>
+                            <th scope="col">Taxa de comissão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><= 1000 reais</td>
+                        <td>3%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td><= 10000 reais</td>
+                        <td>4%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td><= 50000 reais</td>
+                        <td>5%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td><= 100000 reais</td>
+                        <td>6%</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>> 100000 reais</td>
+                        <td>7%</td>
+                    </tr>
+                </tbody>
+            </table>
+                <br/><br/>
+                <div class="form-group">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <button class="btn btn-secondary">Confirmar Pagamento</button>
+                    </form>
+                </div>
+
+                <script>
+                    var cliente_id = "{{ user.id }}";
+                    var cliente_username = "{{ user.username }}";
+                    document.getElementById("cliente_comprador_lance_mais_alto_field").value = cliente_id;
+                    document.getElementById("cliente_comprador_username_field").value = cliente_username;
+                </script>
+            {% else %}
+                <h2>Esse lote ainda não foi liberado para lances!</h2>
+            {% endif %}
+        {% else %}
+            <h2>Apenas usuários clientes podem realizar lances!</h2>
+        {% endif %}
+    {% else %}
+       <h2>Por favor, faça login para realizar lances!</h2>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Área Exclusiva
+{% endblock %}
+
+{% block content %}
+    {% if user.first_name == "['leiloeiro']" %}
+        <h1> Leiloeiro, seja bem-vindo a Área Exclusiva </h1>
+        <br/><br/>
+        <h2>Nessa página você pode gerar relatórios para acompanhar a performance do leilão!</h2>
+        <br/><br/>
+        <a href="{% url 'gerar_relatorio_desempenho'%}"><button class="btn btn-info">Gerar Relatório de Desempenho</button></a>
+        <br/><br/>
+        <a href="{% url 'gerar_relatorio_faturamento'%}"><button class="btn btn-danger">Gerar Relatório de Faturamento</button></a>
+    {% else %}
+        <h1> Esta página é apenas para Leiloeiros! </h1> <br/>
+    {% endif %}
+{% endblock %}
