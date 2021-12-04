@@ -1,6 +1,6 @@
 import decimal
 from django import forms
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import pytz
 from django.template import Context, Template
 
@@ -37,8 +37,9 @@ class LoteCreateForm(forms.ModelForm):  # Ofertar lote de produtos
             self.instance.taxa_comissao = 4 * float(valor_base) / 100.00  # taxa de 4%
         else:
             self.instance.taxa_comissao = 5 * float(valor_base) / 100.00  # taxa de 5%
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
+        diferenca = timedelta(hours=-3)
+        fuso = timezone(diferenca)
+        tempo_atual = datetime.now().astimezone(fuso)
         self.instance.data_inicio = tempo_atual
         # PRIMEIRA VALIDACAO: Vendedor tem saldo para pagar taxa de comissao
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.cleaned_data['cliente_vendedor'])
@@ -69,8 +70,9 @@ class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
             raise forms.ValidationError('Para enviar esse formulário, você precisa liberar o lote para leilão')
         saldo_vendedor = models.Saldo.objects.all().get(username_cliente=self.instance.cliente_vendedor)
         # SEGUNDA VALIDACAO: Leilao precisa acabar no futuro
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
+        diferenca = timedelta(hours=-3)
+        fuso = timezone(diferenca)
+        tempo_atual = datetime.now().astimezone(fuso)
         self.instance.data_inicio = tempo_atual
         tempo_final = self.cleaned_data['data_final']
         if tempo_final < tempo_atual:
@@ -86,8 +88,9 @@ class LoteLiberarForm(forms.ModelForm):  # Leiloeiro libera lote para lances
         saldo_vendedor.valor -= decimal.Decimal(self.instance.taxa_comissao)
         saldo_vendedor.save()
         # ok, vamos adicionar pagamento ao leilao
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
+        diferenca = timedelta(hours=-3)
+        fuso = timezone(diferenca)
+        tempo_atual = datetime.now().astimezone(fuso)
         pagamento = models.Pagamento(lote=self.instance, data=tempo_atual, valor=self.instance.taxa_comissao,
                                      tipo_de_pagamento='COMISSÃO NOVO LOTE')
         pagamento.save()
@@ -103,8 +106,9 @@ class LoteFinalizarLeilaoForm(forms.ModelForm):  # Hora de realizar cobranças
 
     def clean(self):
         # PRIMEIRA VALIDACAO: Data final precisa estar no passado
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
+        diferenca = timedelta(hours=-3)
+        fuso = timezone(diferenca)
+        tempo_atual = datetime.now().astimezone(fuso)
         tempo_final = self.instance.data_final
         if (tempo_final > tempo_atual):
             raise forms.ValidationError("O leilão ainda vai acabar:" + tempo_final.strftime("%m/%d/%Y, %H:%M:%S"))
@@ -205,8 +209,9 @@ class LoteUpdateForm(forms.ModelForm):  # Realizar Lance
             raise forms.ValidationError('Pela regra de incremento mínimo, você precisa ofertar pelo menos ' + str(
                 lance_atual + incremento_minimo))
         # QUARTA VALIDACAO: Se o leilao ja expirou, nao dah pra fazer lance
-        utc = pytz.UTC
-        tempo_atual = utc.localize(datetime.now())
+        diferenca = timedelta(hours=-3)
+        fuso = timezone(diferenca)
+        tempo_atual = datetime.now().astimezone(fuso)
         tempo_final = self.instance.data_final
         if (tempo_final < tempo_atual):
             raise forms.ValidationError(
