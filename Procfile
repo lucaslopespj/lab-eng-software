@@ -1,0 +1,1 @@
+web: gunicorn ProjetoLeilao.wsgi --log-file -
