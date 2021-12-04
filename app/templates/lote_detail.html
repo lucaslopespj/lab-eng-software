@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ lote.nome }}
+{% endblock %}
+
+{% block content %}
+    <h1> {{ lote.nome }} </h1>
+    <h2> Usuário Vendedor: {{ lote.cliente_vendedor.username }} </h2>
+    <br/>
+
+    {% if lote.liberado_para_lances == True %}
+        {% if lote.leilao_finalizado == False %}
+            {% if lote.valor_lance_mais_alto > 0 %}
+                {% if lote.numero_de_lances == 1 %}
+                    <p> Este lote recebeu {{ lote.numero_de_lances }} lance. </p>
+                {% else %}
+                    <p> Este lote recebeu {{ lote.numero_de_lances }} lances. </p>
+                {% endif %}
+                <br/>
+                <h3> Atual lance vencedor :</h3>
+                <p> {{ lote.cliente_comprador_lance_mais_alto.username }} deu um lance de {{ lote.valor_lance_mais_alto }} </p>
+                <p> Valor mínimo de incremento = {{lote.valor_minimo_incremento_por_lance}}</p>
+                <p><i>Após o Leiloeiro finalizar o leilão, será anunciado o vencedor.</i></p>
+            {% else %}
+                <h3>Ainda não tivemos lances nesse lote.</h3>
+                <p>Valor minimo do lance = {{lote.valor_minimo_lance}}</p>
+            {% endif %}
+            <h4> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</h4>
+        {% else %}
+            {% if lote.valor_lance_mais_alto >= lote.valor_reserva %}
+                <h3> O lote foi vendido! </h3>
+                <p> {{ lote.cliente_comprador_lance_mais_alto.username }} comprou o lote por {{ lote.valor_lance_mais_alto }} </p>
+            {% else %}
+                <h3> O lote não foi vendido! </h3>
+                {% if lote.valor_lance_mais_alto > 0 %}
+                    <p> O lance mais alto <b>{{lote.valor_lance_mais_alto}}</b> não atingiu o valor de reserva: <b>{{lote.valor_reserva}}</b></p>
+                {% else %}
+                    <p> Não houveram lances nesse lote! </p>
+                {% endif %}
+            {% endif %}
+            {% if lote.liberado_para_lances == True %}
+                <h4> Duração do Leilão {{ lote.data_inicio }} - {{ lote.data_final }}</h4>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <strong>Esse lote ainda não foi liberado para lances. Volte em breve!</strong>
+    {% endif %}
+    <br/><br/>
+    <h4>Detalhes do Lote:</h4>
+    <p> <b>Autor:</b> {{lote.autor}}</p>
+    <p> <b>Editora:</b> {{lote.editora}} </p>
+    <p> <b>Número de Páginas:</b> {{lote.numero_de_paginas}} </p>
+    <p> {{ lote.descricao }} </p>
+    <p> <b>Estado de conservação:</b> {{ lote.estado_conservacao }}</p>
+    {% if user.is_authenticated %}
+            {% if lote.liberado_para_lances == False %}
+                {% if user.first_name == "['leiloeiro']" %}
+                    <a href="{% url 'lote_liberar' lote.pk %}">Liberar Lote para Leilão</a> <br/> <br/>
+                    <a href="{% url 'lote_cancel' lote.pk %}">Cancelar leilão</a> <br/> <br/>
+                {% endif %}
+            {% else %}
+                {% if user.first_name == "['cliente']" %}
+                    {% if lote.leilao_finalizado == False %}
+                        <a href="{% url 'lote_lance' lote.pk %}">Realizar lance</a> <br/> <br/>
+                    {% endif %}
+                {% endif %}
+                {% if user.first_name == "['leiloeiro']" %}
+                    {% if lote.leilao_finalizado == False %}
+                        <a href="{% url 'lote_finalizar' lote.pk %}">Finalizar Leilão</a> <br/> <br/>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            {% if user.first_name == "['leiloeiro']" %}
+                {% if lote.liberado_para_lances == False %}
+                    <a href="{% url 'lote_editar_adm' lote.pk %}">Editar dados do lote</a><br/><br/>
+                {% endif %}
+            {% endif %}
+    {% endif %}
+    {% if user == lote.cliente_vendedor %}
+            {% if lote.liberado_para_lances == False %}
+                <a href="{% url 'lote_editar' lote.pk %}">Editar dados do lote</a><br/><br/>
+            {% endif %}
+    {% endif %}
+    <a href="{% url 'home' %}" class="btn btn-warning"> BACK </a>
+{% endblock %}

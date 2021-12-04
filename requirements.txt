@@ -1,0 +1,9 @@
+Django==3.2.8
+pymysql==1.0.2
+selenium==4.0.0
+django
+djangorestframework
+django-environ
+psycopg2-binary
+gunicorn
+whitenoise
