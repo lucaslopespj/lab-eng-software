@@ -14,7 +14,7 @@ services:
   
   ProjetoLeilao:
     public: true
-      image:okteto.dev/ProjetoLeilao:latest
+      image:okteto.dev
     build: .
     replicas: 1
     command: bash -c "gunicorn ProjetoLeilao.wsgi --reload -b 0.0.0.0:8000"
