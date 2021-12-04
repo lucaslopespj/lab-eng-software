@@ -67,5 +67,3 @@ Para esclarecer o fluxo de usuário no projeto e criar uma memória visual do pr
 - [Linking user model to a custom profile model](https://prog.world/one-to-one-relationship-linking-a-user-model-to-a-custom-profile-model-in-django/)
 
 - [Making database queries in Django](https://docs.djangoproject.com/en/3.2/topics/db/queries/)
-
-- [How to deploy a Django app with Postgres](https://dev.to/giftedstan/heroku-how-to-deploy-a-django-app-with-postgres-in-5-minutes-5lk)
