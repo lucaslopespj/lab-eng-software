@@ -2,9 +2,15 @@
 
 O projeto da disciplina é um sistema para leilões online. O deploy foi feito utilizando **Heroku** e pode ser acessado no link [https://projetoleilao.herokuapp.com/](https://projetoleilao.herokuapp.com/)
 
-Os diagramas e relatórios produzidos ao longo do curso se encontram na pasta **Documentação**.
+## Documentação do Projeto e Slides da Apresentação
+
+A documentação do projeto desenvolvido ao longo do curso se encontra na pasta **Documentação**.
+
+Os slides utilizados na apresentação final também estão na pasta **Documentação**
 
 ## Como rodar localmente ?
+
+Com o objetivo de facilitar testes da versão local do projeto, trocamos o banco de dados MySQL usado ao longo da disciplina por SQLite. A versão para deploy no **Heroku** utiliza um banco de dados Postgres.
 
 Para executar o projeto, primeiro é necessário instalar **requirements.txt**
 
@@ -21,6 +27,10 @@ Realizar as migrações para deixar seu banco igual o nosso
 Agora basta executar o servidor
 
 > python manage.py runserver
+
+Observação: Caso você queira limpar o banco SQLite para fazer seus testes, use o comando 
+
+> python manage.py flush
 
 ## Pasta Screenshots
 
