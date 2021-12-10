@@ -2,6 +2,8 @@
 
 O projeto da disciplina é um sistema para leilões online. O deploy foi feito utilizando **Heroku** e pode ser acessado no link [https://projetoleilao.herokuapp.com/](https://projetoleilao.herokuapp.com/)
 
+Com o objetivo de facilitar testes da versão local do projeto, trocamos o banco de dados MySQL usado ao longo da disciplina por SQLite. A versão para deploy no **Heroku** utiliza um banco de dados Postgres.
+
 ## Documentação do Projeto e Slides da Apresentação
 
 A documentação do projeto desenvolvido ao longo do curso se encontra na pasta **Documentação**.
@@ -10,9 +12,9 @@ Os slides utilizados na apresentação final também estão na pasta **Documenta
 
 ## Como rodar localmente ?
 
-Com o objetivo de facilitar testes da versão local do projeto, trocamos o banco de dados MySQL usado ao longo da disciplina por SQLite. A versão para deploy no **Heroku** utiliza um banco de dados Postgres.
+Primeiramente, é necessário ter o **pipenv**. ![Como baixar pipenv ?](https://pypi.org/project/pipenv/)
 
-Para executar o projeto, primeiro é necessário instalar **requirements.txt**
+Agora, com o pipenv, vamos instalar **requirements.txt**
 
 > pipenv install -r requirements.txt
 
