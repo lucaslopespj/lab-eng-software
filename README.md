@@ -12,7 +12,7 @@ Os slides utilizados na apresentação final também estão na pasta **Documenta
 
 ## Como rodar localmente ?
 
-Primeiramente, é necessário ter o **pipenv**. ![Como baixar pipenv ?](https://pypi.org/project/pipenv/)
+Primeiramente, é necessário ter o **pipenv**. [Link com instruções para baixar pipenv](https://pipenv.pypa.io/en/latest/install/#installing-pipenv).
 
 Agora, com o pipenv, vamos instalar **requirements.txt**
 
